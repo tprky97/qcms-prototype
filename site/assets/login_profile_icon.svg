@@ -1,0 +1,20 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="19.4919" height="23.7487" viewBox="0 0 19.4919 23.7487" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Icon">
+<foreignObject x="-4.01157" y="-4.01157" width="27.5151" height="31.7719"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(2.01px);clip-path:url(#bgblur_0_0_177_clip_path);height:100%;width:100%"></div></foreignObject><g id="Union" data-figma-bg-blur-radius="4.01157">
+<use xlink:href="#stroke0_0_177" fill="white" fill-opacity="0.4"/>
+<mask id="stroke1_0_177" maskUnits="userSpaceOnUse" x="-0.732562" y="-0.732562" width="21" height="25" fill="black">
+<rect fill="white" x="-0.732562" y="-0.732562" width="21" height="25"/>
+<use xlink:href="#stroke0_0_177"/>
+</mask>
+<path d="M9.74595 15.5604C14.8858 15.5604 19.2245 16.3773 19.2245 19.536C19.2241 22.6919 14.8578 23.4813 9.74595 23.4813C4.60619 23.4813 0.267438 22.6644 0.267438 19.5057C0.267617 16.3496 4.63406 15.5604 9.74595 15.5604ZM9.74693 0.267438C13.2285 0.267438 16.0193 2.99953 16.0194 6.40904C16.0194 9.81865 13.2286 12.5516 9.74693 12.5516C6.2667 12.5514 3.47545 9.81854 3.47545 6.40904C3.47556 2.99964 6.26677 0.267608 9.74693 0.267438Z" stroke-width="0.534876" stroke-linecap="round" stroke-linejoin="round" stroke="url(#paint0_linear_0_177)" mask="url(#stroke1_0_177)"/>
+</g>
+</g>
+<defs>
+<clipPath id="bgblur_0_0_177_clip_path" transform="translate(4.01157 4.01157)"><path d="M9.74595 15.5604C14.8858 15.5604 19.2245 16.3773 19.2245 19.536C19.2241 22.6919 14.8578 23.4813 9.74595 23.4813C4.60619 23.4813 0.267438 22.6644 0.267438 19.5057C0.267617 16.3496 4.63406 15.5604 9.74595 15.5604ZM9.74693 0.267438C13.2285 0.267438 16.0193 2.99953 16.0194 6.40904C16.0194 9.81865 13.2286 12.5516 9.74693 12.5516C6.2667 12.5514 3.47545 9.81854 3.47545 6.40904C3.47556 2.99964 6.26677 0.267608 9.74693 0.267438Z"/>
+</clipPath><linearGradient id="paint0_linear_0_177" x1="3.28509" y1="2.97188" x2="18.4322" y2="18.2918" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.25"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<path id="stroke0_0_177" d="M9.74595 15.5604C14.8858 15.5604 19.2245 16.3773 19.2245 19.536C19.2241 22.6919 14.8578 23.4813 9.74595 23.4813C4.60619 23.4813 0.267438 22.6644 0.267438 19.5057C0.267617 16.3496 4.63406 15.5604 9.74595 15.5604ZM9.74693 0.267438C13.2285 0.267438 16.0193 2.99953 16.0194 6.40904C16.0194 9.81865 13.2286 12.5516 9.74693 12.5516C6.2667 12.5514 3.47545 9.81854 3.47545 6.40904C3.47556 2.99964 6.26677 0.267608 9.74693 0.267438Z"/>
+</defs>
+</svg>

@@ -1,0 +1,20 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="30.9334" height="32.6" viewBox="0 0 30.9334 32.6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Cursor" filter="url(#filter0_d_0_4)">
+<path id="Vector" d="M8.80004 5.80001L22.1334 13.1333L16.1334 14.8L13.4667 20.8L8.80004 5.80001Z" fill="url(#paint0_linear_0_4)" stroke-width="1.6" stroke-linejoin="round" stroke="white"/>
+</g>
+<defs>
+<filter id="filter0_d_0_4" x="-1.86663" y="-1.36666" width="36" height="39" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feGaussianBlur stdDeviation="4"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.18 0 0 0 0 0.44 0 0 0 0 0.96 0 0 0 0.45 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_4"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_4" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_4" x1="8.80004" y1="5.80001" x2="19.4404" y2="15.2581" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A88CFA"/>
+<stop offset="1" stop-color="#2E70F5"/>
+</linearGradient>
+</defs>
+</svg>
