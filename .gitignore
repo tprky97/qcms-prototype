@@ -1,0 +1,20 @@
+# ───── نظام التشغيل ─────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ───── النسخ المولّدة من البيلد ─────
+# دي كلها بتتعمل أوتوماتيك من site/ بـ `node sync.js`
+# ما تترفعش عشان ما تعملش تعارضات في الـ merge (ملف 9MB بيتغير كله مع أي تعديل)
+site/qcms-inbox.html
+src/
+deploy/
+deploy-public/
+
+# ───── نسخ احتياطية ومراجع محلية ─────
+_backup/
+ref/
+
+# ───── Node ─────
+node_modules/
+npm-debug.log*
