@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse id="Envelope Halo" cx="320" cy="210" rx="320" ry="210" fill="url(#paint0_radial_0_157)"/>
+<defs>
+<radialGradient id="paint0_radial_0_157" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(320 210) scale(320 210)">
+<stop stop-color="#ABC6FB" stop-opacity="0.55"/>
+<stop offset="1" stop-color="#ABC6FB" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

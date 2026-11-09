@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="500" height="386" viewBox="0 0 500 386" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Lip Highlight">
+<path id="Vector" d="M28 138L200 236C232 254 268 254 300 236L472 138" stroke-width="2.5" stroke-linecap="round" stroke="url(#paint0_linear_0_210)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_210" x1="28" y1="193.75" x2="472" y2="193.75" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.2"/>
+<stop offset="0.5" stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0.2"/>
+</linearGradient>
+</defs>
+</svg>
