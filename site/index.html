@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صندوق وارد qCMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="popovers.css">
+<link rel="stylesheet" href="login.css">
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+<!-- Login (Figma 2997:49872 «Makeen Login – Envelope Hero (v3)») — sits under the gov utility bar of .app, shown on every load -->
+<div class="login" id="login">
+  <section class="lg-form">
+    <header class="lg-hd">
+      <img class="lg-logo" src="assets/logo.png" alt="قمم للتعاملات الإلكترونية">
+      <button class="lg-lang" type="button" dir="ltr"><img src="assets/login_globe.svg" alt="">English</button>
+    </header>
+    <form class="lg-main" id="login-form" autocomplete="off" novalidate>
+      <div class="lg-badge"><span class="lg-badge-ic"><img class="b" src="assets/login_profile_bg.svg" alt=""><img class="i" src="assets/login_profile_icon.svg" alt=""></span></div>
+      <h1 class="lg-title">مرحباً بعودتك!</h1>
+      <p class="lg-sub">سجّل الدخول إلى نظام قمم للتعاملات الإلكترونية</p>
+      <div class="lg-fields">
+        <label class="lg-field"><span class="lg-label">اسم المستخدم<span class="req">*</span></span>
+          <span class="lg-input"><input name="user" placeholder="أدخل اسم المستخدم"></span></label>
+        <label class="lg-field"><span class="lg-label">كلمة المرور<span class="req">*</span></span>
+          <span class="lg-input"><input name="pass" type="password" placeholder="أدخل كلمة المرور"><button class="lg-eye" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false"><img class="off" src="assets/login_eye_off.svg" alt=""><img class="on" src="assets/login_eye.svg" alt=""></button></span></label>
+        <div class="lg-row">
+          <label class="lg-remember"><input type="checkbox" class="lg-check">تذكرني</label>
+          <a href="#" class="lg-forgot">هل نسيت كلمة المرور؟</a>
+        </div>
+      </div>
+      <button class="lg-submit" type="submit">تسجيل الدخول</button>
+    </form>
+    <footer class="lg-copy">
+      <span class="ver">الإصدار v5.4.00</span>
+      <span class="rights"><span><span class="lt">جميع الحقوق محفوظة لـ </span>شركة تقنيات القمم</span><span class="q"><img src="assets/login_qtech.png" alt=""></span><span>2026</span></span>
+    </footer>
+  </section>
+
+  <section class="lg-brand" aria-hidden="true">
+    <!-- circuit traces hug the panel edges, so the left and right groups are anchored separately -->
+    <div class="lg-traces">
+      <div class="tr-side l">
+        <img src="assets/login_trace1.svg" alt=""><img src="assets/login_trace2.svg" alt=""><img src="assets/login_trace5.svg" alt="">
+        <svg class="lg-light lt1" viewBox="0 0 720 1026"><path pathLength="1" d="M0 340H70L100 310H170"/></svg>
+        <svg class="lg-light lt2" viewBox="0 0 720 1026"><path pathLength="1" d="M0 410H100L130 440V510"/></svg>
+        <svg class="lg-light lt5" viewBox="0 0 720 1026"><path pathLength="1" d="M0 966H90L120 936H190"/></svg>
+        <img class="lg-node n1" src="assets/login_node.svg" alt=""><img class="lg-node n2" src="assets/login_node.svg" alt=""><img class="lg-node n5" src="assets/login_node.svg" alt="">
+      </div>
+      <div class="tr-side r">
+        <img src="assets/login_trace3.svg" alt=""><img src="assets/login_trace4.svg" alt=""><img src="assets/login_trace6.svg" alt="">
+        <svg class="lg-light lt3" viewBox="0 0 720 1026"><path pathLength="1" d="M720 300H640L610 270H550"/></svg>
+        <svg class="lg-light lt4 orange" viewBox="0 0 720 1026"><path pathLength="1" d="M720 460H660L630 490V560"/></svg>
+        <svg class="lg-light lt6" viewBox="0 0 720 1026"><path pathLength="1" d="M720 986H630L600 956H530"/></svg>
+        <img class="lg-node n3" src="assets/login_node.svg" alt=""><img class="lg-node n4" src="assets/login_node_orange.svg" alt=""><img class="lg-node n6" src="assets/login_node.svg" alt="">
+      </div>
+    </div>
+
+    <div class="lg-stage">
+      <div class="lg-head">
+        <h2>قمم للتعاملات الإلكترونية</h2>
+        <p>منصة رقمية متكاملة تتيح لك إنجاز المعاملات، متابعة المعاملات الرسمية، وإدارة الموارد والمراسلات بكفاءة عالية.</p>
+      </div>
+      <img class="lg-glow" src="assets/login_glow.svg" alt="">
+      <img class="lg-halo" src="assets/login_env_halo.svg" alt="">
+      <img class="lg-ground" src="assets/login_env_ground.svg" alt="">
+
+      <div class="lg-env">
+        <img class="bloom" src="assets/login_env_bloom.svg" alt="">
+        <img class="back" src="assets/login_env_back.svg" alt="">
+        <div class="lg-cards">
+          <div class="lg-cw c1"><div class="lg-card">
+            <div class="hd">
+              <div class="org"><span class="oi amber"><img src="assets/login_ic_file.svg" alt=""></span><span class="tx"><b>الاتصالات الإدارية</b><small>صادر رقم 4580</small></span></div>
+              <span class="chip amber">قيد المراجعة</span>
+            </div>
+            <hr>
+            <div class="ttl"><b>خطاب تعميم إداري</b><small>إلى جميع الإدارات</small></div>
+            <div class="det"><p>• بشأن تحديث إجراءات العمل</p><p>• بانتظار توقيع المدير العام</p></div>
+            <div class="ft"><span class="chip blue"><img src="assets/login_ic_wait.svg" alt="">بانتظار الموافقة</span><span class="chip file"><img src="assets/login_ic_pdf.svg" alt="">التعميم.pdf</span></div>
+          </div></div>
+          <div class="lg-cw c2"><div class="lg-card">
+            <div class="hd">
+              <div class="org"><span class="oi teal"><img src="assets/login_ic_wallet.svg" alt=""></span><span class="tx"><b>الشؤون المالية</b><small>مسير رقم 11/2026</small></span></div>
+              <span class="chip teal">معتمدة</span>
+            </div>
+            <hr>
+            <div class="ttl"><b>مسير رواتب نوفمبر</b><small>248 موظفًا</small></div>
+            <div class="det"><p>• الإجمالي: 1,240,500 ر.س</p><p>• اعتُمد من المدير العام</p></div>
+            <div class="ft"><span class="chip sky"><img src="assets/login_ic_ok.svg" alt="">معتمد</span><span class="chip file"><img src="assets/login_ic_pdf.svg" alt="">المسير.pdf</span></div>
+          </div></div>
+          <div class="lg-cw c3"><div class="lg-card">
+            <div class="hd">
+              <div class="org"><span class="oi blue"><img src="assets/login_ic_cal.svg" alt=""><img class="dot" src="assets/login_urgent_dot.svg" alt=""></span><span class="tx"><b>الموارد البشرية</b><small>طلب رقم 1287</small></span></div>
+              <span class="tags"><span class="chip new">جديدة</span><span class="chip amber urgent"><img src="assets/login_ic_urgent.svg" alt="">عاجل</span></span>
+            </div>
+            <hr>
+            <div class="ttl"><b>طلب إجازة سنوية</b><small>أحمد العتيبي · 5 أيام</small></div>
+            <div class="det"><p>• من 12 إلى 16 نوفمبر 2026</p><p>• بانتظار اعتماد المدير المباشر</p></div>
+            <div class="ft"><span class="chip file"><img src="assets/login_ic_pdf.svg" alt="">نموذج الإجازة.pdf</span></div>
+          </div></div>
+        </div>
+        <div class="pocket-blur"></div>
+        <img class="pocket" src="assets/login_env_pocket.svg" alt="">
+        <img class="inset" src="assets/login_env_inset.svg" alt="">
+        <img class="lipglow" src="assets/login_env_lipglow.svg" alt="">
+        <img class="lip" src="assets/login_env_lip.svg" alt="">
+      </div>
+
+      <img class="lg-ripple" src="assets/login_ripple.svg" alt="">
+      <span class="lg-cursor"><img src="assets/login_cursor.svg" alt=""></span>
+      <span class="lg-spark s1"><img src="assets/login_sparkle1.svg" alt=""></span>
+      <img class="lg-spark s2" src="assets/login_sparkle2.svg" alt="">
+      <span class="lg-spark s3"><img src="assets/login_sparkle3.svg" alt=""></span>
+      <div class="lg-chip"><img src="assets/login_mail.svg" alt=""><i class="r1"></i><i class="r2"></i></div>
+    </div>
+  </section>
+</div>
+<div class="app">
+
+  <!-- Utility bar -->
+  <div class="utility">
+    <div class="gov">
+      <img src="assets/flag.png" alt="">
+      <span>موقع حكومي رسمي تابع لحكومة المملكة العربية السعودية</span>
+      <a href="#">كيف تتحقق؟ <i data-i="h_linkchev"></i></a>
+    </div>
+    <div class="tools">
+      <button class="tool"><i data-i="h_access"></i>أدوات الوصول</button>
+      <span class="sep"></span>
+      <span class="tool"><i data-i="h_cal"></i>3-سبتمبر-2024 - 2:30 مساءً</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="start">
+      <div class="logo"><img src="assets/logo.png" alt="قمم"></div>
+      <button class="hd-collapse" aria-label="طي القائمة" data-ftip="طي القائمة"><i data-i="sidebar22"></i></button>
+      <label class="hsearch"><i data-i="search16"></i><input placeholder="ابحث برقم المعاملة , رقم الأرشيف او الموضوع"></label>
+    </div>
+    <div class="end">
+      <button class="hicon plus" aria-label="إنشاء" data-ftip="إنشاء"><i data-i="r_plus"></i></button>
+      <button class="rail-btn ai" data-tip aria-label="Qemam AI"><img class="core" src="assets/ai.png" alt=""><img class="ring" src="assets/orb.png" alt=""><span class="sparkle" style="--s:9px;--x:-24px;--y:-21px"></span><span class="sparkle" style="--s:7px;--x:21px;--y:-20px"></span><span class="sparkle" style="--s:6px;--x:-22px;--y:18px"></span><span class="tip grad">Qemam AI</span></button>
+      <button class="rail-btn platforms" data-tip aria-label="الأنظمة والتطبيقات"><span class="orb"></span><i data-i="i_apps"></i><span class="tip">الأنظمة والتطبيقات</span></button>
+      <button class="hicon" aria-label="الإشعارات" data-ftip="الإشعارات"><i data-i="h_bell"></i><span class="num">10</span></button>
+      <span class="hsep"></span>
+      <button class="user" id="user-btn" aria-label="حسابي">
+        <i data-i="h_chev"></i>
+        <span class="info"><span class="name">عبد الله القحطاني الدوسري</span><span class="role">الرئيس التنفيذي</span></span>
+        <span class="avatar-me">AD</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- Nav rail -->
+    <!-- Level 1: icons only; the first item widens it to icon + label. A section opens its own menu in the side panel -->
+    <aside class="rail" id="rail">
+      <div>
+      <!-- floats on level 1's edge while the section menu (level 2) is closed, to reopen it -->
+      <button class="rail-open" aria-label="فتح القائمة الجانبية" data-ftip="فتح القائمة"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 3.5 6.06 7.44a.8.8 0 0 0 0 1.12L10 12.5" stroke="#384250" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <nav>
+        <button class="rail-item rail-toggle" aria-expanded="false"><span class="tile"><i data-i="sidebar22"></i></span><span class="lbl">طي القائمة</span></button>
+        <a class="rail-item active" href="#" data-sec="overview"><span class="tile"><span class="i-off"><i data-i="r_home_line"></i></span><span class="i-on"><i data-i="r_home_fill"></i></span></span><span class="lbl">الرئيسية</span></a>
+        <a class="rail-item" href="#" data-sec="mail"><span class="tile"><span class="i-off"><i data-i="r_inbox_line"></i></span><span class="i-on"><i data-i="r_inbox_fill"></i></span></span><span class="lbl">البريد</span></a>
+        <a class="rail-item" href="#" data-sec="etx"><span class="tile"><span class="i-off"><i data-i="r_comm_line"></i></span><span class="i-on"><i data-i="r_comm"></i></span></span><span class="lbl">الاتصالات الإدارية</span></a>
+        <a class="rail-item" href="#" data-sec="hr"><span class="tile"><span class="i-off"><i data-i="r_hr_line"></i></span><span class="i-on"><i data-i="r_hr"></i></span></span><span class="lbl">الموارد البشرية</span></a>
+        <a class="rail-item" href="#" data-sec="dev"><span class="tile"><span class="i-off"><i data-i="r_screen_line"></i></span><span class="i-on"><i data-i="r_screen"></i></span></span><span class="lbl">التطوير</span></a>
+        <a class="rail-item" href="#" data-sec="settings"><span class="tile"><span class="i-off"><i data-i="r_set_line"></i></span><span class="i-on"><i data-i="r_set_fill"></i></span></span><span class="lbl">إعدادات النظام</span></a>
+      </nav>
+      </div>
+      <div class="rail-bottom">
+        <button class="rail-item rail-util" aria-label="المساعدة"><span class="rail-btn notes-btn"><i data-i="r_help"></i></span><span class="lbl">المساعدة</span></button>
+        <button class="rail-item rail-util" aria-label="الملاحظات"><span class="rail-btn notes-btn"><i data-i="h_note"></i></span><span class="lbl">الملاحظات</span></button>
+        <button class="rail-item rail-util" aria-label="Q Stamp"><span class="rail-btn stamp"><img class="s-bg" src="assets/stamp_bg.png" alt=""><img class="s-fg" src="assets/stamp_fg.png" alt=""></span><span class="lbl">Q Stamp</span></button>
+      </div>
+    </aside>
+
+    <!-- Level 2: the chosen section's own menu (title + close button, search, tree), like the Figma secondary panel.
+         Closing it leaves a floating button over level 1 to reopen it. -->
+    <aside class="spanel" id="sec-panel" aria-label="قائمة القسم">
+      <div class="spanel-in" data-menu="mail" hidden>
+        <div class="spanel-head">
+          <h2>البريد</h2>
+          <button class="sp-close" aria-label="إغلاق القائمة الجانبية" data-ftip="إغلاق القائمة"><i data-i="sidebar22"></i></button>
+        </div>
+        <nav class="tree">
+          <a class="node leaf active" href="#"><span class="ic"><i data-i="fd_inbox"></i></span>الوارد</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="fd_sent"></i></span>الصادر</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="i_stats"></i></span>الإحصائيات والتقارير</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="ac_settings"></i></span>إعدادات</a>
+        </nav>
+      </div>
+      <div class="spanel-in" data-menu="etx" hidden>
+        <div class="spanel-head">
+          <h2>الاتصالات الإدارية</h2>
+          <button class="sp-close" aria-label="إغلاق القائمة الجانبية" data-ftip="إغلاق القائمة"><i data-i="sidebar22"></i></button>
+        </div>
+        <button class="sp-new" type="button"><span class="sp-plus"><i data-i="r_plus"></i></span><span class="lbl">إنشاء معاملة</span></button>
+        <nav class="tree">
+          <a class="node leaf active" href="#"><span class="ic"><i data-i="i_stats"></i></span>الإحصائيات والتقارير</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="fd_archive"></i></span>الأرشيف</a>
+          <div class="group closed"><button class="node head" type="button"><span class="ic"><i data-i="ac_settings"></i></span><span class="lbl">الإعدادات</span><span class="chev"><i data-i="chev14"></i></span></button>
+            <div class="kids">
+              <a class="node leaf" href="#"><span class="ic"><i data-i="sp_task"></i></span>مسارات سير العمل</a>
+              <a class="node leaf" href="#"><span class="ic"><i data-i="bx_user_shield"></i></span>الأدوار والمهام</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="spanel-in" data-menu="hr" hidden>
+        <div class="spanel-head">
+          <h2>الموارد البشرية</h2>
+          <button class="sp-close" aria-label="إغلاق القائمة الجانبية" data-ftip="إغلاق القائمة"><i data-i="sidebar22"></i></button>
+        </div>
+        <button class="sp-new" type="button" id="sp-new-req"><span class="sp-plus"><i data-i="r_plus"></i></span><span class="lbl">إنشاء طلب</span><span class="chev"><i data-i="chev14"></i></span></button>
+        <nav class="tree">
+          <a class="node leaf" href="#"><span class="ic"><i data-i="i_stats"></i></span>الإحصائيات والتقارير</a>
+          <a class="node leaf active" href="#"><span class="ic"><i data-i="f_hier"></i></span>الهيكل الإداري</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hg_island"></i></span>الإجازات</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="i_time"></i></span>الأذونات</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="bx_money"></i></span>الرواتب</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hg_exit"></i></span>إخلاء الطرف</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_housing"></i></span>بدل السكن</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hg_bus"></i></span>أوامر الإركاب</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_scroll"></i></span>أوامر الصرف</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_mission"></i></span>الانتدابات</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_jobs"></i></span>الوظائف</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="sp_users"></i></span>الموظفين</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_moves"></i></span>حركات الموظفين</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_overtime"></i></span>العمل خارج الدوام</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_raise"></i></span>العلاوة السنوية</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="hr_deduct"></i></span>بيانات الحسم</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="fd_archive"></i></span>الأرشيف</a>
+          <div class="group closed"><button class="node head" type="button"><span class="ic"><i data-i="ac_settings"></i></span><span class="lbl">الإعدادات</span><span class="chev"><i data-i="chev14"></i></span></button>
+            <div class="kids">
+              <a class="node leaf" href="#"><span class="ic"><i data-i="sp_task"></i></span>سير العمل</a>
+              <a class="node leaf" href="#"><span class="ic"><i data-i="bx_user_shield"></i></span>الأدوار والمهام</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="spanel-in" data-menu="dev" hidden>
+        <div class="spanel-head">
+          <h2>التطوير</h2>
+          <button class="sp-close" aria-label="إغلاق القائمة الجانبية" data-ftip="إغلاق القائمة"><i data-i="sidebar22"></i></button>
+        </div>
+        <nav class="tree">
+          <a class="node leaf active" href="#"><span class="ic"><i data-i="m_file"></i></span>طلبات التطوير</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="sp_task"></i></span>خارطة الطريق</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="sp_archive"></i></span>الإصدارات</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="fd_urgent"></i></span>البلاغات الفنية</a>
+        </nav>
+      </div>
+      <div class="spanel-in" data-menu="settings" hidden>
+        <div class="spanel-head">
+          <h2>إعدادات النظام</h2>
+          <button class="sp-close" aria-label="إغلاق القائمة الجانبية" data-ftip="إغلاق القائمة"><i data-i="sidebar22"></i></button>
+        </div>
+        <nav class="tree">
+          <a class="node leaf active" href="#"><span class="ic"><i data-i="f_platform"></i></span>إعدادات المنصة</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="f_hier"></i></span>الحوكمة</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="f_integ"></i></span>مركز التكاملات</a>
+          <a class="node leaf" href="#"><span class="ic"><i data-i="f_activity"></i></span>صحة المنصة</a>
+          <div class="group"><button class="node head" type="button"><span class="ic"><i data-i="sp_task"></i></span><span class="lbl">سير العمل</span><span class="chev"><i data-i="chev14"></i></span></button>
+            <div class="kids">
+              <a class="node leaf" href="#"><span class="ic"><i data-i="f_hier"></i></span>المسارات</a>
+              <a class="node leaf" href="#"><span class="ic"><i data-i="m_file"></i></span>النماذج</a>
+              <a class="node leaf" href="#"><span class="ic"><i data-i="i_time"></i></span>سجل التنفيذ</a>
+            </div>
+          </div>
+          <div class="group"><button class="node head" type="button"><span class="ic"><i data-i="bx_user_shield"></i></span><span class="lbl">الأدوار والمهام</span><span class="chev"><i data-i="chev14"></i></span></button>
+            <div class="kids">
+              <a class="node leaf" href="#"><span class="ic"><i data-i="sp_users"></i></span>الأدوار</a>
+              <a class="node leaf" href="#"><span class="ic"><i data-i="i_file_check"></i></span>المهام</a>
+              <a class="node leaf" href="#"><span class="ic"><i data-i="sp_lock"></i></span>الصلاحيات</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <!-- Inbox panel (shown by the rail item «البريد») -->
+      <section class="panel" id="mail-page" hidden>
+        <div class="topbar">
+          <nav class="crumbs">
+            <a href="#"><i data-i="bc_home"></i></a><i data-i="bc_arrow"></i>
+            <a href="#">البريد</a><i data-i="bc_arrow"></i>
+            <span class="cur">الوارد</span>
+          </nav>
+        </div>
+        <div class="pbody">
+          <!-- Folders panel: closed (icons), hover (overlay) or pinned -->
+          <nav class="folders" id="folders" aria-label="مجلدات الوارد">
+            <div class="fold-in">
+              <div class="fold-head">
+                <span class="fold-title">الوارد</span>
+                <button class="pin" id="pin" aria-pressed="false" aria-label="تثبيت القائمة"><span class="p-off"><i data-i="pin_off"></i></span><span class="p-on"><i data-i="pin_on"></i></span></button>
+              </div>
+              <div class="fold-list boxes-closed groups-closed">
+                <button class="folder active" data-f="inbox" data-ftip-closed="الجميع"><i data-i="fd_all"></i><span class="lbl">الجميع</span><span class="cnt">12</span></button>
+                <button class="folder" data-f="new" data-ftip-closed="الجديد"><i data-i="fd_new"></i><span class="lbl">الجديد</span><span class="cnt">5</span></button>
+                <button class="folder" data-f="urgent" data-ftip-closed="العاجلة"><i data-i="fd_urgent"></i><span class="lbl">العاجلة</span><span class="cnt">3</span></button>
+                <button class="folder" data-f="late" data-ftip-closed="المؤجلة"><i data-i="fd_late"></i><span class="lbl">المؤجلة</span></button>
+                <button class="folder" data-f="saved" data-ftip-closed="المحفوظات"><i data-i="fd_saved"></i><span class="lbl">المحفوظات</span></button>
+                <button class="folder" data-f="fav" data-ftip-closed="المفضلة"><i data-i="fd_fav"></i><span class="lbl">المفضلة</span></button>
+                <div class="fgroup">
+                  <button class="fgroup-t" type="button" aria-expanded="false"><span>صناديق</span><span class="chev"><i data-i="chev14"></i></span></button>
+                  <button class="fgroup-add" type="button" aria-label="إضافة صندوق" data-ftip="إضافة صندوق"><i data-i="r_plus"></i></button>
+                </div>
+                <div class="fgroup fgroup-grp">
+                  <button class="fgroup-t" type="button" aria-expanded="false"><span>مجموعات</span><span class="chev"><i data-i="chev14"></i></span></button>
+                  <button class="fgroup-add" type="button" aria-label="إضافة مجموعة" data-ftip="إضافة مجموعة"><i data-i="r_plus"></i></button>
+                </div>
+              </div>
+            </div>
+          </nav>
+          <!-- Mail list -->
+          <div class="list" id="mail-list">
+            <div class="list-resize" role="separator" aria-orientation="vertical" aria-label="تغيير عرض قائمة الرسائل" tabindex="0" data-ftip="اسحب لتغيير العرض"></div>
+            <div class="list-top">
+              <h2 class="list-title" id="list-title">الوارد</h2>
+              <button class="ibtn refresh tt" aria-label="تحديث"><span class="tip">تحديث</span><i data-i="refresh"></i></button>
+            </div>
+            <div class="sel-bar" hidden>
+              <label class="sel-all"><button class="pick" role="checkbox" aria-checked="false" aria-label="تحديد الكل"></button><span id="sel-count">تم تحديد (0)</span></label>
+              <div class="sel-acts">
+                <button class="sel-btn tt" id="sel-fwd" aria-label="إحالة"><i data-i="fwd"></i><span class="tip">إحالة</span></button>
+                <button class="sel-btn tt" id="sel-more" aria-label="المزيد"><i data-i="vmore"></i><span class="tip">المزيد</span></button>
+                <span class="sel-div"></span>
+                <button class="sel-btn tt" id="sel-close" aria-label="إلغاء التحديد"><i data-i="x18"></i><span class="tip">إلغاء التحديد</span></button>
+              </div>
+            </div>
+            <div class="list-tools">
+              <label class="lsearch"><i data-i="search16"></i><input placeholder="ابحث…"></label>
+              <button class="ibtn lg tt" aria-label="تصفية"><i data-i="filter18"></i><span class="tip">تصفية</span></button>
+              <button class="ibtn lg tt" aria-label="ترتيب"><i data-i="sort18"></i><span class="tip">ترتيب</span></button>
+            </div>
+            <div class="items" id="items"></div>
+            <div class="filter-empty" id="filter-empty" hidden><b class="fe-title">نتائج البحث (0)</b><div class="empty-state"><span class="ic"><i data-i="mail16"></i></span><b>لا توجد نتائج</b><span>جرّب تغيير خيارات التصفية أو إعادة تعيينها</span></div></div>
+          </div>
+
+          <!-- Reading pane -->
+          <article class="reader">
+            <div class="rtool">
+              <div class="grp">
+                <button class="rbtn ai"><img src="assets/ai.png" alt="">المساعد الذكي<i data-i="chev14"></i></button>
+                <button class="rbtn ihala"><i data-i="fwd"></i>إحالة<span class="caret"><i data-i="chev14"></i></span></button>
+              </div>
+              <div class="grp">
+                <button class="ibtn" aria-label="حفظ"><i data-i="tb_save"></i></button>
+                <button class="ibtn" aria-label="غير مقروء"><i data-i="tb_unread"></i></button>
+                <button class="ibtn" aria-label="متابعة"><i data-i="tb_flag"></i></button>
+                <button class="ibtn" aria-label="المزيد"><i data-i="tb_more"></i></button>
+              </div>
+            </div>
+
+            <div class="content">
+              <div class="mhead">
+                <div class="titlecol">
+                  <h1 id="m-title">مذكرة اعتماد إجازة اعتيادية للموظف أحمد سليم بن عبدالله لمدة خمسة أيام مع تفويض الصلاحيات الإدارية</h1>
+                  <div class="sender-row">
+                    <span class="sender-av"></span>
+                    <div class="who">
+                      <div class="nm"><span id="m-sender" class="person">مدير إدارة الموارد البشرية</span><button class="sender-arrow" aria-label="تفاصيل المعاملة" data-ftip="تفاصيل المعاملة"><i data-i="senderarrow"></i></button></div>
+                      <div class="org">&lt;إدارة الموارد البشرية&gt;</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="side">
+                  <div class="when"><span>الأحد 4 أكتوبر 2026، 10:24 ص</span><span>·</span><span class="ago">منذ 12 يوم</span></div>
+                </div>
+              </div>
+
+              <div class="recips">
+                <span class="lab">موجه إلى</span>
+                <span class="chip person">أحمد سليم بن عبدالله</span>
+                <span class="chip person">سارة القحطاني</span>
+                <span class="chip person">خالد أحمد علي</span>
+                <button class="chip more">+3</button>
+                <span class="gap10"></span>
+                <span class="lab">صورة إلى</span>
+                <span class="chip person">إدارة شؤون الموظفين</span>
+                <span class="chip person">مكتب رئيس البلدية</span>
+                <button class="chip more">+1</button>
+              </div>
+
+              <div class="divider"></div>
+
+              <!-- shown above the letter for a confidential urgent transaction (Outlook "High importance" style) -->
+              <div class="review-note" hidden><i data-i="lock_solid"></i>سري وعاجل</div>
+              <div class="letter">
+                <p class="strong">بسم الله الرحمن الرحيم</p>
+                <p class="strong">سعادة مدير عام الشؤون الإدارية والمالية السلام عليكم ورحمة الله وبركاته، وبعد :</p>
+                <p>نفيد سعادتكم بأن الموظف/ أحمد سليم بن عبدالله (الرقم الوظيفي 104582)، أخصائي أول تخطيط بإدارة الاتصالات الإدارية، قد تقدّم بطلب إجازة اعتيادية لمدة خمسة (5) أيام عمل، تبدأ من يوم الأحد 18/10/2026م وتنتهي بنهاية دوام يوم الخميس 22/10/2026م، على أن يباشر عمله يوم الأحد 25/10/2026م.</p>
+                <p>وبعد مراجعة رصيد الموظف من الإجازات الاعتيادية تبيّن أن رصيده المتاح (24) يومًا، وأن الطلب مستوفٍ للشروط الواردة في لائحة الإجازات المعتمدة، ولا يتعارض مع جدول الإجازات المعتمد للإدارة خلال الربع الرابع.</p>
+                <p>علمًا بأن التفويض ساري خلال فترة الإجازة فقط وينتهي تلقائيًا بمباشرة الموظف لعمله، وقد أُرفق نموذج طلب الإجازة ومذكرة التفويض وكشف رصيد الإجازات. ويمكن الاطلاع على تفاصيل الطلب وسجل الموافقات عبر الرابط: <a href="#">فتح الطلب في نظام الموارد البشرية</a></p>
+                <p>نأمل من سعادتكم التكرم بالاطلاع والتوجيه باعتماد الطلب، وإحالته إلى إدارة شؤون الموظفين لاستكمال الإجراءات النظامية.</p>
+                <button class="btn-outline"><i data-i="ext16"></i>فتح في نظام الموارد البشرية</button>
+                <p class="strong">وتقبلوا خالص التحية والتقدير،،،</p>
+                <p class="strong">مدير إدارة الموارد البشرية</p>
+              </div>
+
+              <!-- earlier messages in the same conversation (Outlook-style): collapsed by default, one example mail only -->
+              <div class="thread" id="thread" hidden></div>
+
+              <section class="attachments">
+                <div class="att-head"><h3>المرفقات (3)</h3><button class="ibtn dots" aria-label="طريقة العرض"><i data-i="tb_more"></i></button></div>
+                <div class="files">
+                  <div class="file">
+                    <div class="info"><i data-i="f_doc"></i><div class="txt"><div class="top"><span class="fname">نموذج_الطلب.docx</span><span class="badge green">مقيد</span></div><span class="size">86 KB</span></div></div>
+                    <button class="dl tt" aria-label="تحميل"><i data-i="download"></i><span class="tip">تحميل</span></button>
+                  </div>
+                  <div class="file">
+                    <div class="info"><i data-i="f_pdf"></i><div class="txt"><div class="top"><span class="fname">مذكرة_الإجازة.pdf</span><span class="badge red">سري للغاية</span></div><span class="size">86 KB</span></div></div>
+                    <button class="dl tt" aria-label="تحميل"><i data-i="download"></i><span class="tip">تحميل</span></button>
+                  </div>
+                  <div class="file">
+                    <div class="info"><i data-i="f_xls"></i><div class="txt"><span class="fname">مذكرة_الإجازة.XLS</span><span class="size">240 KB</span></div></div>
+                    <button class="dl tt" aria-label="تحميل"><i data-i="download"></i><span class="tip">تحميل</span></button>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div class="actions">
+              <button class="btn"><i data-i="ihala24"></i>احالة للتوقيع</button>
+              <button class="btn">تأشير المذكرة<i data-i="chev24"></i></button>
+              <button class="btn go" hidden>الانتقال إلى النظام<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button class="btn no" hidden>رفض</button>
+              <button class="btn ok" hidden>قبول</button>
+              <div class="split">
+                <button class="btn">توقيع المذكرة</button>
+                <button class="btn caret" aria-label="خيارات التوقيع"><i data-i="chev24w"></i></button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Home dashboard «الرئيسية» (spec v1.9): the page after login, opened by the rail item «الرئيسية». Built by dashboard.js -->
+      <section class="db-page" id="dashboard" aria-label="الرئيسية">
+        <div class="panel db-panel">
+          <div class="db-scroll">
+            <div class="db-grid" id="db-grid"></div>
+            <footer class="db-foot"><span>جميع الحقوق محفوظة لشركة القمم</span><img src="assets/logo.png" alt="قمم"><span dir="ltr">© 2026</span></footer>
+          </div>
+          <div class="db-sr" id="db-live" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="ai-strip"><button class="ai-float" aria-label="المساعد الذكي"><img src="assets/ai.png" alt="" draggable="false"><span class="tip grad">المساعد الذكي</span><span class="ai-close" role="button" tabindex="0" aria-label="إغلاق المساعد الذكي" data-ftip="إغلاق"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 1.5l5 5m0-5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span></button></div>
+</div>
+<!-- ===== Popovers & menus ===== -->
+<div class="pop menu" id="pop-create" role="menu" aria-label="إنشاء">
+  <button class="mi"><i data-i="i_mail_add"></i>إنشاء معاملة</button>
+  <button class="mi"><i data-i="hg_island"></i>طلب إجازة</button>
+  <button class="mi"><i data-i="bx_money"></i>طلب مشهد بالراتب</button>
+  <button class="mi"><i data-i="i_time"></i>طلب إذن</button>
+  <button class="mi"><i data-i="hg_exit"></i>طلب إخلاء طرف</button>
+</div>
+<div class="pop menu" id="pop-request" role="menu" aria-label="إنشاء طلب">
+  <button class="mi"><i data-i="hg_island"></i>طلب إجازة</button>
+  <button class="mi"><i data-i="i_time"></i>طلب إذن</button>
+  <button class="mi"><i data-i="hr_jobs"></i>طلب مهمة عمل</button>
+  <button class="mi"><i data-i="hr_mission"></i>طلب انتداب</button>
+  <button class="mi"><i data-i="hg_bus"></i>طلب أمر إركاب</button>
+  <button class="mi"><i data-i="hr_letter"></i>طلب خطاب تعريف</button>
+  <button class="mi"><i data-i="bx_invoice"></i>طلب مشهد بالراتب</button>
+  <button class="mi"><i data-i="hr_bank"></i>طلب تثبيت حساب بنكي</button>
+  <button class="mi"><i data-i="hr_card"></i>طلب إصدار بطاقة عمل</button>
+  <button class="mi"><i data-i="hg_exit"></i>طلب إخلاء طرف</button>
+</div>
+<div class="pop menu" id="pop-ihala">
+  <button class="mi"><i data-i="m_all"></i>عموم البلدية</button>
+  <button class="mi"><i data-i="m_user"></i>موظف محدد</button>
+</div>
+<div class="pop menu" id="pop-edit">
+  <button class="mi"><i data-i="m_edit2"></i>تعديل المعاملة</button>
+  <button class="mi" data-open="pop-notes"><i data-i="m_notes"></i>الملاحظات</button>
+  <button class="mi"><i data-i="m_file"></i>طلب أصول</button>
+  <button class="mi" data-act="print"><i data-i="m_print"></i>طباعة</button>
+  <button class="mi" data-rule="mail"><i data-i="m_folder_add"></i>إنشاء صندوق</button>
+</div>
+<!-- mail rules (rules.js): the ⋯ menu of a folder row, built for the folder it opens on -->
+<div class="pop menu" id="pop-folder" role="menu" aria-label="خيارات المجلد"></div>
+<div class="pop menu" id="pop-ai">
+  <button class="mi" data-ai="summary"><i data-i="m_aisum"></i><span class="lbl">تلخيص البريد</span></button>
+  <button class="mi" data-ai="attach"><i data-i="m_aisum"></i><span class="lbl">تلخيص المرفقات</span></button>
+</div>
+<div class="pop menu soft" id="pop-sort">
+  <button class="mi sel" data-sort="new"><i data-i="m_tick"></i>الأحدث</button>
+  <button class="mi" data-sort="old"><span class="ph"></span>الأقدم</button>
+</div>
+<div class="pop menu r8" id="pop-sign">
+  <button class="mi g10"><i data-i="m_sig"></i>توقيع المذكرة</button>
+  <button class="mi g10"><i data-i="m_edit1"></i>توقيع يدوي</button>
+  <button class="mi g10"><i data-i="m_agree"></i>توقيع بامر من نائب الامير</button>
+  <button class="mi g10"><i data-i="m_agree"></i>توقيع بامر الامير</button>
+  <button class="mi g10"><i data-i="m_agree"></i>توقيع بتفويض</button>
+</div>
+<div class="pop menu tight" id="pop-tashir">
+  <button class="mi g10 md"><i data-i="m_edit1"></i>تأشير المذكرة</button>
+  <button class="mi g10 md"><i data-i="m_paste"></i>تأشير وإحالة للوكيل</button>
+  <button class="mi g10 md"><i data-i="m_import"></i>تأشير وإحالة للسعادة</button>
+  <button class="mi g10 md"><i data-i="m_import"></i>تأشير الي موظف محدد</button>
+</div>
+<div class="pop menu" id="pop-attview">
+  <button class="mi" data-view="grid"><i data-i="m_grid"></i>عرض كلي</button>
+  <button class="mi" data-view="seq"><i data-i="m_carousel"></i>عرض تسلسلي</button>
+</div>
+<div class="pop menu soft" id="pop-follow">
+  <button class="mi g10" data-flag="1"><i data-i="fu_flag"></i>اليوم</button>
+  <button class="mi g10" data-flag="1"><i data-i="fu_flag"></i>غدًا</button>
+  <button class="mi g10" data-flag="1"><i data-i="fu_flag"></i>هذا الأسبوع</button>
+  <button class="mi g10" data-flag="1"><i data-i="fu_flag"></i>الأسبوع القادم</button>
+  <button class="mi g10" data-flag="1"><i data-i="fu_flag"></i>بدون تاريخ</button>
+  <button class="mi g10" data-flag="1"><i data-i="fu_flag_line"></i>تاريخ مخصص…</button>
+  <div class="mi-sep"></div>
+  <button class="mi g10" data-flag="0"><i data-i="fu_check"></i>تم الإنجاز</button>
+  <button class="mi g10" data-flag="0"><i data-i="fu_remove"></i>إزالة العلامة</button>
+</div>
+<!-- the hidden recipients behind +3 / +1, each shown as the person card (photo, name, department) -->
+<div class="pop menu recip-pop" id="pop-recips"></div>
+
+<!-- Linked platforms launcher (Figma: Apps Launcher — Current) -->
+<div class="pop apps" id="pop-apps" role="dialog" aria-label="الأنظمة والتطبيقات">
+  <div class="hd"><span class="tt">الأنظمة والتطبيقات</span><button class="close" data-close aria-label="إغلاق"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" stroke="#384250" stroke-width="1.5" stroke-linecap="round"/></svg></button></div>
+  <div class="div"></div>
+  <div class="grid">
+    <button class="apl" aria-label="نظام قمم للتعاملات الإلكترونية" style="--sh:59,174,146;--sa:.1;--sb:.06;--g:.62;--gh:.9;--lx:4px;--ly:-2px"><span class="ic"><img class="glow" src="assets/app_qcms.png" alt=""><span class="frost"></span><img class="logo" src="assets/logo_qcms.svg" alt=""></span><span class="nm-row"><span class="nm">نظام قمم للتعاملات الإلكترونية</span><span class="ext" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+    <button class="apl" aria-label="البوابة المكانية الداخلية للموظفين" style="--sh:120,172,241;--sa:.16;--sb:.1;--g:.62;--gh:.9;--bx:54px;--by:60px;--ba:.17;--lx:5px;--ly:-3px"><span class="ic"><img class="glow" src="assets/app_qtech.svg" alt=""><span class="frost"></span><img class="logo" src="assets/logo_qtech.svg" alt=""></span><span class="nm-row"><span class="nm">البوابة المكانية الداخلية للموظفين</span><span class="ext" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+    <button class="apl" aria-label="منصة قمم لإدارة المعلومات المكانية" style="--sh:62,143,208;--sa:.16;--sb:.1;--g:.42;--gh:.7;--lx:6px;--ly:-2px"><span class="ic"><img class="glow" src="assets/app_geohub_orange.png" alt=""><span class="frost"></span><img class="logo" src="assets/logo_geohub_orange.svg" alt=""></span><span class="nm-row"><span class="nm">منصة قمم لإدارة المعلومات المكانية</span><span class="ext" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+    <button class="apl" aria-label="منصة تبادل المعلومات المكانية" style="--sh:62,143,208;--sa:.16;--sb:.1;--g:.62;--gh:.9;--bx:-1px;--by:41px;--ba:.2;--lx:8px;--ly:0px"><span class="ic"><img class="glow" src="assets/app_geoep.svg" alt=""><span class="frost"></span><img class="logo" src="assets/logo_geoep.svg" alt=""></span><span class="nm-row"><span class="nm">منصة تبادل المعلومات المكانية</span><span class="ext" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+    <button class="apl" aria-label="لوحة تحكم البوابة الجيومكانية" style="--sh:179,46,155;--sa:.16;--sb:.1;--g:.42;--gh:.7;--lx:5px;--ly:-3px"><span class="ic"><img class="glow" src="assets/app_geohub_purple.png" alt=""><span class="frost"></span><img class="logo" src="assets/logo_geohub_purple.svg" alt=""></span><span class="nm-row"><span class="nm">لوحة تحكم البوابة الجيومكانية</span><span class="ext" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+    <button class="apl" aria-label="لوحة تحكم تبادل المعلومات المكانية" style="--sh:62,143,208;--sa:.16;--sb:.1;--g:.62;--gh:.9;--bx:-1px;--by:41px;--ba:.2;--lx:8px;--ly:0px"><span class="ic"><img class="glow" src="assets/app_geoep.svg" alt=""><span class="frost"></span><img class="logo" src="assets/logo_geoep.svg" alt=""></span><span class="nm-row"><span class="nm">لوحة تحكم تبادل المعلومات المكانية</span><span class="ext" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 7 6 18M11 6.13s5.63-.47 6.49.38c.85.86.38 6.49.38 6.49" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+  </div>
+</div>
+
+<div class="pop details" id="pop-details">
+  <!-- Figma «Transaction Details Popover» 2879:64724 (2 Nov 2026) -->
+  <dl class="subj"><dt>الموضوع</dt><dd>خطاب بشأن تفعيل خدمة التوقيع الإلكتروني على المعاملات الصادرة من البلدية</dd></dl>
+  <dl class="grid">
+    <div><dt>رقم المرجعي</dt><dd>15896431</dd></div>
+    <div><dt>نوع المعاملة</dt><dd>خطاب وارد</dd></div>
+    <div><dt>تصنيف المعاملة</dt><dd>للحفظ</dd></div>
+    <div><dt>مستوى التصنيف</dt><dd>عام</dd></div>
+    <div><dt>مصدر المعاملة</dt><dd>وزارة المالية</dd></div>
+    <div><dt>المرسل</dt><dd>وكيل وزارة المالية</dd></div>
+    <div><dt>منشئ المعاملة</dt><dd>عبدالرحمن السيد محمد حموده</dd></div>
+    <div><dt>مدة المعاملة</dt><dd>44 يوم</dd></div>
+    <div><dt>مدة التواجد لديك</dt><dd>4 يوم</dd></div>
+    <div><dt>مدة الإنجاز</dt><dd>1 يوم</dd></div>
+    <div><dt>التوجيه</dt><dd>لتوقيع الخطاب</dd></div>
+    <div><dt>المشفوعات</dt><dd>—</dd></div>
+  </dl>
+</div>
+
+<div class="pop filter" id="pop-filter">
+  <div class="hd">التصفية<button class="xbtn" data-close aria-label="إغلاق"><i data-i="x18"></i></button></div>
+  <div class="fields">
+    <div class="f-dds"></div>
+    <div class="fld">البحث حسب تاريخ
+      <div class="radios">
+        <label><input type="radio" name="dt" checked>الوارد</label>
+        <label><input type="radio" name="dt">الخطاب</label>
+        <label><input type="radio" name="dt">المعاملة</label>
+      </div>
+      <div class="dates">
+        <label class="date"><span class="dv">يوم/شهر/سنة</span><input type="date" tabindex="-1" aria-label="من تاريخ"><i data-i="fl_cal"></i></label>
+        <span>:</span>
+        <label class="date"><span class="dv">يوم/شهر/سنة</span><input type="date" tabindex="-1" aria-label="إلى تاريخ"><i data-i="fl_cal"></i></label>
+      </div>
+    </div>
+  </div>
+  <div class="ft">
+    <button class="btn-primary" id="f-apply" disabled>عرض النتائج</button>
+    <button class="btn-ghost" id="f-reset"><i data-i="fl_reset"></i>إعادة تعيين</button>
+  </div>
+</div>
+
+<div class="pop help" id="pop-help">
+  <button class="hp"><span class="ic" style="background:#f4ebff"><i data-i="hp_cursor"></i></span><span class="tx"><b>جولة إرشادية</b><small>تعريف تفاعلي بالنظام خطوة بخطوة</small></span><i data-i="hp_arrow"></i></button>
+  <button class="hp"><span class="ic" style="background:#eff4ff"><i data-i="hp_book"></i></span><span class="tx"><b>دليل المستخدم</b><small>شرح تفصيلي لاستخدام خدمات النظام</small></span><i data-i="hp_arrow"></i></button>
+  <button class="hp"><span class="ic" style="background:#ecfdf3"><i data-i="hp_map"></i></span><span class="tx"><b>الخريطة</b><small>عرض شامل لهيكل صفحات وخدمات النظام</small></span><i data-i="hp_arrow"></i></button>
+  <button class="hp"><span class="ic" style="background:#fffaeb"><i data-i="hp_alert"></i></span><span class="tx"><b>تحذيرات النظام</b><small>سجل التحذيرات الصادرة من النظام</small></span><i data-i="hp_arrow"></i></button>
+</div>
+
+<div class="pop a11y" id="pop-a11y">
+  <div class="hd"><span class="t">أدوات الوصول</span><button class="reset" id="a11y-reset"><i data-i="a_refresh"></i>إعادة الضبط</button><button class="xbtn" data-close aria-label="إغلاق"><i data-i="a_close"></i></button></div>
+  <div class="opts">
+    <button class="opt" data-a="hc"><i data-i="a_contrast"></i><span class="tip">الوان خاصة</span></button>
+    <button class="opt" data-a="voice"><i data-i="a_3"></i><span class="tip">القراءة الصوتية</span></button>
+    <button class="opt" data-a="zin"><i data-i="a_2"></i><span class="tip">تكبير</span></button>
+    <button class="opt" data-a="zout"><i data-i="a_1"></i><span class="tip">تصغير</span></button>
+  </div>
+</div>
+
+<div class="pop notes drawer" id="pop-notes" role="dialog" aria-label="الملاحظات"></div>
+<div class="pop notifs drawer" id="pop-notifs" role="dialog" aria-label="الإشعارات"></div>
+
+<!-- AI assistant drawer (Figma: I — Glass Prompt Cards) -->
+<div class="pop chat drawer" id="pop-chat" role="dialog" aria-label="Qemam AI">
+  <div class="chat-hd">
+    <div class="chat-id"><span class="chat-av"><img src="assets/ai_avatar.png" alt=""></span><span><b>Qemam AI</b><small>إصدار 1.0</small></span></div>
+    <div class="chat-tools">
+      <button class="chat-tool" data-chat="new" aria-label="محادثة جديدة" data-ftip="محادثة جديدة"><img src="assets/ai_newchat.svg" alt=""></button>
+      <button class="chat-tool" data-chat="features" aria-label="خصائص المساعد" data-ftip="خصائص المساعد"><img src="assets/ai_notes.svg" alt=""></button>
+      <button class="chat-tool" data-chat="history" aria-label="سجل المحادثات" data-ftip="سجل المحادثات"><img src="assets/ai_history.svg" alt=""></button>
+      <button class="chat-tool" data-chat="expand" aria-label="توسيع" data-ftip="توسيع"><img src="assets/ai_expand.svg" alt=""></button>
+      <button class="chat-tool" data-close aria-label="إغلاق المساعد الذكي" data-ftip="إغلاق"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10m0-10L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+  </div>
+  <div class="chat-body">
+    <div class="chat-welcome">
+      <div class="chat-hero">
+        <span class="chat-logo"><img src="assets/ai.png" alt=""></span>
+        <h3>كيف أقدر أساعدك اليوم؟</h3>
+        <p>معك مساعدك بالذكاء الإصطناعي, كيف يمكنني مساعدتك؟</p>
+      </div>
+      <div class="chat-cards">
+        <button class="chat-card" data-prompt="summary"><img src="assets/ai_maillock.svg" alt=""><b>تلخيص</b><small>تلخيص تفاصيل معاملاتك بسرعة وكفاءة</small></button>
+        <button class="chat-card" data-prompt="ocr"><img src="assets/ai_scan.svg" alt=""><b>استخراج نصوص</b><small>تحويل المستندات المصورة إلى نص</small></button>
+        <button class="chat-card" data-prompt="report"><img src="assets/ai_report.svg" alt=""><b>إنشاء تقرير</b><small>تقرير شهري بالمعاملات الواردة والصادرة</small></button>
+        <button class="chat-card" data-prompt="stats"><img src="assets/ai_chart.svg" alt=""><b>إنشاء إحصائية</b><small>عدد المعاملات حسب الإدارة والحالة</small></button>
+      </div>
+    </div>
+    <div class="chat-log" hidden></div>
+    <div class="chat-features" hidden>
+      <div class="cf-top"><button type="button" class="chat-tool" data-chat="features" aria-label="رجوع" data-ftip="رجوع"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button><b>خصائص المساعد الذكي</b></div>
+      <div class="chat-cards">
+        <button class="chat-card" data-prompt="summary"><img src="assets/ai_maillock.svg" alt=""><b>تلخيص</b><small>تلخيص تفاصيل معاملاتك بسرعة وكفاءة</small></button>
+        <button class="chat-card" data-prompt="ocr"><img src="assets/ai_scan.svg" alt=""><b>استخراج نصوص</b><small>تحويل المستندات المصورة إلى نص</small></button>
+        <button class="chat-card" data-prompt="report"><img src="assets/ai_report.svg" alt=""><b>إنشاء تقرير</b><small>تقرير شهري بالمعاملات الواردة والصادرة</small></button>
+        <button class="chat-card" data-prompt="stats"><img src="assets/ai_chart.svg" alt=""><b>إنشاء إحصائية</b><small>عدد المعاملات حسب الإدارة والحالة</small></button>
+        <button class="chat-card" data-prompt="reply"><img src="assets/ai_reply.svg" alt=""><b>صياغة رد</b><small>مسودة رد رسمي على المعاملة المفتوحة</small></button>
+        <button class="chat-card" data-prompt="translate"><img src="assets/ai_translate.svg" alt=""><b>ترجمة المعاملة</b><small>ترجمة نص المعاملة إلى الإنجليزية</small></button>
+        <button class="chat-card" data-prompt="classify"><img src="assets/ai_tag.svg" alt=""><b>تصنيف المعاملة</b><small>اقتراح نوع المعاملة ومستوى سريتها</small></button>
+        <button class="chat-card" data-prompt="dates"><img src="assets/ai_calendar.svg" alt=""><b>استخراج المواعيد</b><small>التواريخ والمهام المطلوبة في المعاملة</small></button>
+        <button class="chat-card" data-prompt="related"><img src="assets/ai_related.svg" alt=""><b>معاملات مرتبطة</b><small>إيجاد المعاملات المتعلقة بنفس الموضوع</small></button>
+        <button class="chat-card" data-prompt="compare"><img src="assets/ai_compare.svg" alt=""><b>مقارنة المستندات</b><small>إبراز الفروقات بين نسختين من مستند</small></button>
+      </div>
+    </div>
+  </div>
+  <div class="chat-foot">
+    <form class="chat-input">
+      <span class="ai-ring" aria-hidden="true"><i></i><i></i></span><span class="ai-ring glow" aria-hidden="true"><i></i><i></i></span>
+      <button type="button" class="chat-attach" aria-label="إرفاق" data-ftip="إرفاق ملف"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3.75v10.5M3.75 9h10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <input placeholder="اسألني أي شيء..." aria-label="رسالتك">
+      <button type="submit" class="chat-send" aria-label="إرسال" disabled></button>
+    </form>
+    <p class="chat-note"><img src="assets/ai_info.svg" alt="">النتائج مولّدة بالذكاء الاصطناعي وقد تحتوي على أخطاء، لذا نوصي بمراجعتها.</p>
+  </div>
+  <aside class="chat-history" hidden aria-label="سجل المحادثات">
+    <div class="ch-top"><b>سجل المحادثات</b><button type="button" class="chat-tool" data-chat="history" aria-label="إغلاق السجل" data-ftip="إغلاق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button></div>
+    <div class="ch-tools">
+      <label class="lsearch ch-search"><i data-i="search16"></i><input placeholder="ابحث برقم المعاملة أو الموضوع" aria-label="ابحث برقم المعاملة أو الموضوع"></label>
+      <label class="ch-date" data-ftip="تصفية حسب التاريخ"><i data-i="fl_cal"></i><input type="date" aria-label="تصفية حسب التاريخ"></label>
+    </div>
+    <div class="ch-list"></div>
+  </aside>
+</div>
+
+<!-- home dashboard: export, filters, custom period -->
+<div class="pop menu" id="pop-db-dl">
+  <button class="mi" data-dl="png"><i data-i="f_pdf"></i>صورة (PNG)</button>
+  <button class="mi" data-dl="excel"><i data-i="f_xls"></i>بيانات (Excel)</button>
+</div>
+<!-- home dashboard: «تخصيص القسم» / expand modal and the «تخصيص اللوحة» drawer, on the app scrim (content built by dashboard.js) -->
+<!-- Q Stamp: the product/licence card (Figma qStamp «Qstamp cases» 1:1605 · Standard 129:10972 · status tooltip 53:8053) -->
+<div class="scrim" id="qs-layer" role="dialog" aria-modal="true" aria-label="Q Stamp — رخصة الاستخدام">
+  <div class="qs">
+    <header class="qs-hd">
+      <button class="qs-x" type="button" aria-label="إغلاق"><img src="assets/qs_close.svg" alt="" width="12" height="12"></button>
+      <span class="qs-mark" aria-hidden="true"></span>
+      <p class="qs-by">مُنتج وطني مٌطور بكل فخر واهتمام من قبل <b>"شركة القمم"</b></p>
+      <a class="qs-url" href="https://www.alqemam.com" target="_blank" rel="noopener">www.alqemam.com</a>
+    </header>
+    <div class="qs-body">
+      <section class="qs-card qs-prod">
+        <div class="qs-row qs-sys">
+          <span class="qs-logo"><img src="assets/qs_qcms-logo.png" alt="قمم"></span>
+          <div class="qs-tx">
+            <h3>احد رخص استخدام نظام "قمم للتعاملات الإلكترونية"</h3>
+            <p>نظام متكامل يهدف إلى تحويل كافة المعاملات الداخلية والخارجية للجهة إلى عمليات رقمية تتيح إدارتها وتنفيذها بسهولة.</p>
+          </div>
+        </div>
+        <div class="qs-row qs-owner">
+          <span class="qs-avs" aria-hidden="true">
+            <span class="qs-av a1"><img src="assets/qs_asir-1.png" alt=""></span>
+            <span class="qs-av a2"><span><img src="assets/qs_asir-2.png" alt=""></span></span>
+          </span>
+          <div class="qs-tx">
+            <h3>امانة عسير</h3>
+            <p>رخصة استخدام محدودة لصالح "امانه عسير"</p>
+          </div>
+        </div>
+      </section>
+      <section class="qs-card qs-lic" dir="ltr">
+        <div class="qs-plan">
+          <img class="qs-pat" src="assets/qs_pattern.svg" alt="">
+          <div class="qs-plan-in">
+            <img src="assets/qs_badge-standard.svg" alt="" width="34" height="34">
+            <div><b>Standard License</b><small>Your current license</small></div>
+          </div>
+        </div>
+        <dl class="qs-facts">
+          <div><dt>Version</dt><dd>14.0.0</dd></div>
+          <div><dt>Version date</dt><dd>30/01/2025</dd></div>
+          <div><dt>License type</dt><dd>Limited</dd></div>
+          <div><dt>Expiration date</dt><dd>31/12/2026</dd></div>
+        </dl>
+        <h4>License Features</h4>
+        <ul class="qs-feats">
+          <li><span class="qs-fi"><span class="qs-ai"><img src="assets/qs_ai-icon.png" alt=""></span></span><span class="qs-ft"><b>AI Feature</b><small>Version (13.1.2)</small></span><span class="qs-st" tabindex="0" data-st="Inactive"><img src="assets/qs_check-off.svg" alt="Inactive" width="20" height="20"></span></li>
+          <li><span class="qs-fi"><span class="qs-qe"></span></span><span class="qs-ft"><b>qElite</b><small>Version (16.1.3)</small></span><span class="qs-st" tabindex="0" data-st="Inactive"><img src="assets/qs_check-off.svg" alt="Inactive" width="20" height="20"></span></li>
+          <li><span class="qs-fi"><img src="assets/qs_ic-security.svg" alt="" width="16" height="16"></span><span class="qs-ft"><b>security updates <em class="qs-pill up">Update Available</em></b><small>Version (16.1.1)</small></span><span class="qs-st" tabindex="0" data-st="Active"><img src="assets/qs_check-on.svg" alt="Active" width="20" height="20"></span></li>
+          <li><span class="qs-fi"><img src="assets/qs_ic-support.svg" alt="" width="16" height="16"></span><span class="qs-ft"><b>Technical support</b><small>Expire: 31/12/2025</small></span><span class="qs-st" tabindex="0" data-st="Active"><img src="assets/qs_check-on.svg" alt="Active" width="20" height="20"></span></li>
+          <li><span class="qs-fi"><img src="assets/qs_ic-ocr.svg" alt="" width="16" height="16"></span><span class="qs-ft"><b>OCR <em class="qs-pill">Up to Date</em></b><small>Version (14.0.0)</small></span><span class="qs-st" tabindex="0" data-st="Active"><img src="assets/qs_check-on.svg" alt="Active" width="20" height="20"></span></li>
+        </ul>
+      </section>
+    </div>
+    <footer class="qs-ft-bar" dir="ltr">
+      <a class="qs-cta" href="https://www.alqemam.com" target="_blank" rel="noopener">Contact qtech <img src="assets/qs_ic-send.svg" alt="" width="20" height="20"></a>
+      <p>For upgrade license, last updates &amp; new features contact qtech.</p>
+    </footer>
+  </div>
+</div>
+<div class="scrim db-layer" id="db-modal" role="dialog" aria-modal="true"><div class="db-modal"></div></div>
+<div class="scrim db-layer drawer" id="db-drawer" role="dialog" aria-modal="true"><aside class="db-drawer"></aside></div>
+<!-- mail rules: «إدارة القواعد» — one popup on the app scrim; its screens (list · rule · delete) swap inside it (rules.js) -->
+<div class="scrim db-layer" id="rules-modal" role="dialog" aria-modal="true" aria-labelledby="rl-title"><div class="db-modal rl-modal"></div><div class="pop menu rl-pop" role="menu" aria-label="خيارات القاعدة"></div></div>
+<div class="pop menu" id="pop-db-export">
+  <button class="mi" data-export="PDF"><i data-i="f_pdf"></i>PDF</button>
+  <button class="mi" data-export="Excel"><i data-i="f_xls"></i>Excel</button>
+</div>
+<div class="pop filter" id="pop-db-range" role="dialog" aria-label="فترة مخصصة">
+  <div class="hd">فترة مخصصة<button class="xbtn" data-close aria-label="إغلاق"><i data-i="x18"></i></button></div>
+  <div class="fields"><div class="db-dates"><label class="db-date">من<input type="date"></label><label class="db-date">إلى<input type="date"></label></div></div>
+  <div class="ft"><button class="btn-primary" id="db-r-apply">تطبيق</button></div>
+</div>
+
+<div class="pop account" id="pop-account">
+  <div class="acc-summary"><span class="acc-av">AD</span><span class="acc-id"><b>عبد الله القحطاني الدوسري</b><span>الرئيس التنفيذي · إدارة أمانة عسير</span></span></div>
+  <button class="acc-item" data-acc="portal"><img class="acc-ic" src="assets/acc_portal.svg" alt=""><span>البوابة الداخلية لإدارة خدمات الموظف</span></button>
+  <button class="acc-item" data-acc="contacts"><img class="acc-ic" src="assets/acc_contacts.svg" alt=""><span>دليل جهات الإتصال</span></button>
+  <div class="acc-lang">
+    <button class="acc-item" data-acc="lang" aria-haspopup="menu" aria-expanded="false"><img class="acc-ic" src="assets/acc_lang.svg" alt=""><span>اللغة</span><span class="acc-end"><span class="acc-val">العربية</span><img src="assets/acc_chev.svg" alt="" width="5" height="9"></span></button>
+    <div class="acc-sub" role="menu">
+      <button class="acc-opt on" role="menuitemradio" aria-checked="true" data-lang="ar"><img src="assets/acc_tick.svg" alt="" width="10" height="8"><span>العربية</span></button>
+      <button class="acc-opt" role="menuitemradio" aria-checked="false" data-lang="en"><img src="assets/acc_tick.svg" alt="" width="10" height="8"><span>English</span></button>
+    </div>
+  </div>
+  <button class="acc-item danger"><img class="acc-ic" src="assets/acc_logout.svg" alt=""><span>تسجيل الخروج</span></button>
+</div>
+
+
+<!-- Onboarding popup (Figma 2785:9715 «Intro Popup» + Intro 1B/3/4/5) — opens after login; steps in login.js -->
+<div class="scrim onb" id="onb">
+  <div class="onb-pop" role="dialog" aria-modal="true" aria-labelledby="onb-title">
+    <div class="onb-body">
+      <div class="onb-ill">
+        <span class="onb-band b1"></span><span class="onb-band b2"></span><span class="onb-band b3"></span>
+        <div class="onb-scene" data-step="0">
+          <img class="o1-orbits" src="assets/onb1_orbits.svg" alt="">
+          <span class="o1-glow"><img src="assets/onb1_glow.svg" alt=""></span>
+          <span class="o1-hub"><img src="assets/onb1_hub.svg" alt=""></span>
+          <span class="o1-orb a"><img src="assets/onb1_inbox.svg" alt=""></span>
+          <span class="o1-orb b"><img src="assets/onb1_sent.svg" alt=""></span>
+          <span class="o1-orb c"><img src="assets/onb1_archive.svg" alt=""></span>
+          <span class="o1-orb d"><img src="assets/onb1_users.svg" alt=""></span>
+          <span class="o1-orb e"><img src="assets/onb1_sign.svg" alt=""></span>
+          <img class="o1-dot a" src="assets/onb1_dot3.svg" alt=""><img class="o1-dot b" src="assets/onb1_dot2.svg" alt=""><img class="o1-dot c" src="assets/onb1_dot3.svg" alt="">
+        </div>
+        <div class="onb-scene" data-step="1" hidden>
+          <div class="onb-cam">
+            <div class="onb-win">
+              <img src="assets/onb_screen_base.jpg" alt="">
+              <img class="filter" src="assets/onb_screen_filter.jpg" alt="">
+              <img class="details" src="assets/onb_screen_details.jpg" alt="">
+              <img class="sign" src="assets/onb_screen_sign.jpg" alt="">
+              <img class="ref" src="assets/onb_screen_ref.jpg" alt="">
+              <span class="onb-shine"><i></i></span>
+            </div>
+            <img class="onb-rip r1" src="assets/onb_ripple.svg" alt=""><img class="onb-rip r2" src="assets/onb_ripple.svg" alt=""><img class="onb-rip r3" src="assets/onb_ripple.svg" alt=""><img class="onb-rip r4" src="assets/onb_ripple.svg" alt=""><img class="onb-rip r5" src="assets/onb_ripple.svg" alt=""><img class="onb-rip r6" src="assets/onb_ripple.svg" alt=""><img class="onb-rip r7" src="assets/onb_ripple.svg" alt="">
+            <span class="onb-cur"><img src="assets/onb_cursor.svg" alt=""></span>
+          </div>
+        </div>
+        <div class="onb-scene" data-step="2" hidden><img class="onb-still" src="assets/onb3_illustration.jpg" alt=""></div>
+        <div class="onb-scene" data-step="3" hidden><img class="onb-still" src="assets/onb4_illustration.jpg" alt=""></div>
+        <div class="onb-scene" data-step="4" hidden><img class="onb-still" src="assets/onb5_illustration.jpg" alt=""></div>
+        <button class="onb-close" type="button" aria-label="إغلاق"><img src="assets/onb_close.svg" alt=""></button>
+      </div>
+      <div class="onb-text"><h3 id="onb-title"></h3><p></p></div>
+    </div>
+    <div class="onb-ft">
+      <div class="onb-dots"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="onb-acts"><button class="onb-btn ghost" type="button" data-onb="prev">السابق</button><button class="onb-btn primary" type="button" data-onb="next">التالي</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="confirm">
+  <div class="dialog" role="dialog" aria-modal="true">
+    <h4>حذف الملاحظة؟</h4>
+    <p>هل تريد إتمام عملية الحذف؟</p>
+    <div class="ft"><button class="btn-danger" id="confirm-yes">حذف</button><button class="btn" id="confirm-no" style="height:40px">إلغاء</button></div>
+  </div>
+</div>
+<div class="hcard ucard" id="hc-user" role="tooltip"><span class="sender-av"></span><span class="u-txt"><b></b><span></span></span></div>
+<div class="hcard fcard" id="hc-file" role="tooltip"><dl></dl></div>
+<div class="toast" id="toast"></div>
+<script src="icons.js"></script>
+<script src="icons2.js"></script>
+<script src="app.js"></script>
+<script src="popovers.js"></script>
+<script src="rules.js"></script>
+<script src="login.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

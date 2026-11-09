@@ -1,0 +1,571 @@
+/* ---------- home dashboard «الرئيسية» (spec v1.9 — phase 1: W00 · W01 · W02 · W18 · W04 · W03) ----------
+   Lives in the shell's white page card (.panel), like the mail page. Every class is prefixed db- so nothing
+   leaks into the mail page; colours come from the :root tokens in styles.css. */
+.db-page{flex:1;min-width:0;display:flex;flex-direction:column}
+.db-panel{position:relative}
+.db-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:24px}
+.db-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:stretch}
+.db-sec{grid-column:span 12;min-width:0}
+.db-sec.wide,.db-sec.narrow{grid-column:span 6}  /* two sections in a row share it equally (user request, 1 Nov 2026) */
+@media (max-width:1023px){.db-sec.wide,.db-sec.narrow{grid-column:span 12}}
+.db-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.db-ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.db-ic svg path[fill]:not([fill="none"]),.db-ic svg circle[fill]:not([fill="none"]){fill:currentColor}
+.db-ic svg [stroke]:not([stroke="none"]){stroke:currentColor}
+.db-num{font-variant-numeric:tabular-nums}
+
+/* buttons: the filter panel's 40px buttons (.btn-primary / .btn-ghost colours from popovers.css) */
+.db-btn{height:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 14px;border-radius:8px;font-size:14px;font-weight:500;white-space:nowrap;transition:background .15s,color .15s}
+.db-btn.btn-primary:hover{background:var(--blue-700)}
+.db-btn .db-ic svg{width:18px;height:18px}
+.db-btn.btn-ghost .db-ic svg path:not([fill]){fill:none}  /* .btn-ghost fills every path; the line icons here stay outlined */
+.db-btn:focus-visible,.db-kpi:focus-visible,.db-prow:focus-visible,.db-wbar:focus-visible,.db-link:focus-visible,.db-chip button:focus-visible,.db-seg .ntab:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.db-btn.spin .db-ic svg{animation:refreshSpin .8s linear infinite}
+.db-link{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 8px;border-radius:6px;font-size:13px;font-weight:500;color:var(--blue)}
+.db-link:hover{background:var(--blue-50)}
+
+/* ---------- W00 welcome + control bar ---------- */
+.db-hello{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+.db-hello-tx{display:flex;flex-direction:column;gap:6px;min-width:0}
+.db-hello h1{font-size:24px;font-weight:600;line-height:36px;color:var(--n900)}  /* the page title (was the greeting) */
+.db-meta{display:flex;align-items:center;gap:12px;margin-top:4px;font-size:13px;color:var(--n500)}
+.db-meta .db-upd{display:inline-flex;align-items:center;gap:6px}
+.db-meta .db-upd svg{width:14px;height:14px}
+.db-datechip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;border:1px solid var(--stroke-2);background:#fff;font-size:12px;font-weight:500;color:var(--n700)}
+.db-datechip svg{width:14px;height:14px}
+.db-acts{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.db-acts .db-caret svg{width:14px;height:14px}
+.db-bar{display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px;}
+.db-ctl{display:flex;align-items:center;gap:8px}
+.db-ctl>.db-lbl{font-size:13px;font-weight:500;color:var(--n500)}
+.db-seg.ntabs{margin:0;flex-wrap:nowrap}
+.db-seg .ntab{flex:none;height:32px;padding:0 12px}
+.db-seg .ntab svg{width:14px;height:14px}
+.db-seg .ntab.on svg path[fill]:not([fill="none"]){fill:var(--blue)}
+.db-chip{height:28px;display:inline-flex;align-items:center;gap:4px;padding:0 4px 0 10px;border-radius:999px;border:1px solid var(--blue-150);background:var(--blue-50);font-size:12px;font-weight:500;color:var(--blue-800)}
+.db-chip button{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--blue-800)}
+.db-chip button:hover{background:var(--blue-150)}
+.db-chip.wait{margin-bottom:12px}
+
+/* §11 «دون اتصال» / §7.3 «تعذّر تحديث البيانات»: a thin banner above W00 · «بيانات جزئية» note in the W00 meta line */
+.db-banners{grid-column:span 12}
+.db-banners:empty{display:none}
+.db-banner{display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 8px 6px 12px;border-radius:8px;font-size:13px;font-weight:500}
+.db-banner.off{background:var(--n100);color:var(--n700)}
+.db-banner.err{background:var(--red-50);color:var(--red-700)}
+.db-banner .db-link{margin-inline-start:auto;color:inherit;text-decoration:underline}
+.db-banner .db-link:hover{background:rgba(180,35,24,.08)}
+.db-partial{display:inline-flex;align-items:center;gap:6px;color:var(--amber-700)}
+.db-partial svg{width:14px;height:14px}
+
+/* ---------- W01 KPI cards (3 per row) ---------- */
+.db-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.db-kpi{position:relative;display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid var(--stroke-2);border-radius:12px;background:#fff;box-shadow:var(--shadow-xs);text-decoration:none;color:inherit;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.db-kpi:hover{border-color:var(--n300);box-shadow:0 4px 12px rgba(16,24,40,.08)}
+.db-kpi-hd{display:flex;align-items:center;gap:10px;min-width:0;padding-left:24px}
+.db-kpi-ic{width:36px;height:36px;border-radius:8px;background:var(--tone-bg);color:var(--tone)}
+.db-kpi-ic svg{width:20px;height:20px}
+.db-kpi-t{font-size:14px;font-weight:500;color:var(--n700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-kpi-go{position:absolute;top:20px;left:20px;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--n400);opacity:0;transition:opacity .15s,color .15s}
+.db-kpi:hover .db-kpi-go,.db-kpi:focus-visible .db-kpi-go{opacity:1;color:var(--blue)}
+@media (hover:none){.db-kpi-go{opacity:1}}
+.db-kpi-v{font-size:30px;font-weight:600;line-height:38px;color:var(--n900);font-variant-numeric:tabular-nums}
+.db-kpi.alert .db-kpi-v{color:var(--red-700)}
+.db-kpi-s{min-height:20px;display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;font-size:13px;line-height:20px;color:var(--n600)}
+.db-kpi-s .neg{color:var(--red-700);font-weight:500}
+.db-kpi-s .warn{color:var(--amber-700)}
+.db-cmp{display:inline-flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums}
+.db-cmp b{font-weight:500}
+.db-cmp.up-bad,.db-cmp.down-bad{color:var(--red-700)}
+.db-cmp.up-good,.db-cmp.down-good{color:var(--green)}
+.db-cmp svg{width:12px;height:12px}
+.db-sep{width:3px;height:3px;border-radius:50%;background:var(--n400)}
+.db-meter{display:block;width:100%;height:4px;border-radius:2px;background:var(--n100);overflow:hidden}
+.db-meter i{display:block;height:100%;border-radius:inherit;background:var(--blue)}
+.db-kpi-s .db-meter{flex-basis:100%}
+.tone-blue{--tone:var(--blue);--tone-bg:var(--blue-50)}
+.tone-info{--tone:var(--info);--tone-bg:var(--info-50)}
+.tone-green{--tone:var(--green);--tone-bg:var(--green-50)}
+.tone-red{--tone:var(--red-700);--tone-bg:var(--red-50)}
+.tone-amber{--tone:var(--amber-700);--tone-bg:var(--amber-50)}
+.tone-gray{--tone:var(--n600);--tone-bg:var(--n100)}
+/* one colour per KPI card (user request, 2 Nov 2026); green / red / amber keep their meaning */
+.tone-teal{--tone:var(--teal);--tone-bg:#f0fdf9}
+.tone-indigo{--tone:#444ce7;--tone-bg:#eef4ff}
+.tone-purple{--tone:#6938ef;--tone-bg:#f4f3ff}
+.tone-cyan{--tone:#0e7090;--tone-bg:#ecfdff}
+
+/* ---------- WidgetCard: one container for every section ---------- */
+.db-card{height:100%;display:flex;flex-direction:column;border:1px solid var(--stroke-2);border-radius:12px;background:#fff;box-shadow:var(--shadow-xs);transition:box-shadow .15s}
+.db-card:hover{box-shadow:0 4px 12px rgba(16,24,40,.06)}
+.db-card-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 20px 0}
+.db-card-ttl{display:flex;flex-direction:column;gap:2px;min-width:0}
+.db-card-ttl h2{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;line-height:24px;color:var(--n900)}
+.db-card-sub{font-size:12px;line-height:18px;color:var(--n500)}
+.db-card-bd{flex:1;display:flex;flex-direction:column;min-height:0;padding:16px 20px 20px}
+/* «عرض الكل ←» (W02 only): shows on card hover / keyboard focus, gray until hovered itself */
+.db-all{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 8px;border-radius:6px;font-size:13px;font-weight:500;color:var(--n500);opacity:0;transition:opacity .15s,background .15s,color .15s;flex-shrink:0}
+.db-card:hover .db-all,.db-card:focus-within .db-all{opacity:1}
+@media (hover:none){.db-all{opacity:1}}
+.db-all:hover,.db-all:focus-visible{color:var(--blue);background:var(--blue-50);outline:0}
+.db-all svg{width:14px;height:14px;transform:rotate(180deg)}
+
+/* states: loading / empty / error */
+.db-card .empty-state,.db-kpis .empty-state{display:flex;padding:24px 16px}
+.db-card .empty-state .ic svg{width:22px;height:22px}
+.db-card .empty-state .db-ed{font-size:13px;color:var(--n500)}
+.db-card .empty-state .db-btn{margin-top:8px}
+.db-card .empty-state.err .ic{background:var(--red-50);color:var(--red-700)}
+.db-card .empty-state.sm{padding:16px 8px}
+.db-card .empty-state.sm .ic{width:44px;height:44px}
+.db-sk{display:flex;flex-direction:column;gap:12px}
+.db-sk .sk{border-radius:6px}
+.db-sk-row{display:flex;align-items:center;gap:12px}
+[aria-busy="true"] .db-kpi-go{display:none}
+
+/* ---------- W02 pending your action ---------- */
+/* each row is its own card: the right edge, icon circle, pill and hover tint take the row's tone (late red · due soon amber · on time blue) */
+.db-plist{display:flex;flex-direction:column;gap:10px}
+.db-prow{--acc:var(--blue);--acc-bg:var(--blue-50);--acc-tx:var(--info);display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 14px 10px 16px;border:1px solid var(--stroke);border-right:2px solid var(--acc);border-radius:10px;background:#fff;text-decoration:none;color:inherit;transition:background .12s}
+.db-prow.sev-late{--acc:var(--red);--acc-bg:var(--red-50);--acc-tx:var(--red-700)}
+.db-prow.sev-soon{--acc:var(--amber);--acc-bg:var(--amber-50);--acc-tx:var(--amber-700)}
+.db-prow:hover{background:var(--acc-bg)}
+.db-tico{width:32px;height:32px;border-radius:50%;background:var(--acc-bg);color:var(--acc-tx)}
+.db-prow:hover .db-tico{background:#fff}
+.db-tico svg{width:16px;height:16px}
+.db-pill{height:24px;padding:0 10px;border-radius:999px;background:var(--acc-bg);color:var(--acc-tx);font-size:12px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap;flex-shrink:0}
+.db-prow:hover .db-pill{background:#fff}
+.db-when{min-width:48px;font-size:12px;color:var(--n500);white-space:nowrap;flex-shrink:0;text-align:left}
+.db-pmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.db-psubj{font-size:14px;font-weight:500;line-height:20px;color:var(--n900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-psubj.conf{display:inline-flex;align-items:center;gap:6px;color:var(--n700)}
+.db-psubj.conf svg{width:14px;height:14px}
+.db-pmeta{display:flex;align-items:center;gap:8px;min-width:0;font-size:12px;line-height:18px;color:var(--n500)}
+.db-pmeta .from{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.db-badge{height:20px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0}
+.db-badge.urgent{background:var(--amber-50);color:var(--amber-700)}
+.db-badge.deleg{background:var(--n100);color:var(--n700)}
+.db-due{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;font-size:13px;font-weight:500;color:var(--n600);white-space:nowrap}
+.db-due svg{width:14px;height:14px}
+.db-due.late{color:var(--red-700)}
+.db-due.soon{color:var(--amber-700)}
+
+/* ---------- W18 pending by waiting time ---------- */
+.db-w18-top{font-size:14px;color:var(--n700);margin-bottom:16px}
+.db-w18-top b{font-size:18px;font-weight:600;color:var(--n900)}
+.db-wbars{display:flex;flex-direction:column;gap:6px}
+.db-wbar{display:grid;grid-template-columns:84px minmax(0,1fr) 72px;align-items:center;gap:12px;width:100%;padding:8px;border-radius:8px;text-align:right;transition:opacity .15s,background .15s}
+.db-wbar:hover{background:var(--n50)}
+.db-wbar[aria-pressed="true"]{background:var(--blue-50)}
+.db-wbars:hover .db-wbar:not(:hover):not([aria-pressed="true"]),.db-wbars.has-sel .db-wbar:not([aria-pressed="true"]):not(:hover){opacity:.4}
+.db-wlbl{font-size:13px;color:var(--n700);white-space:nowrap}
+.db-wtrack{height:12px;border-radius:3px;background:var(--n100);overflow:hidden}
+.db-wfill{display:block;height:100%;border-radius:3px;background:var(--c)}
+.db-wval{font-size:13px;color:var(--n500);text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}
+.db-wval b{font-weight:600;color:var(--n900)}
+.db-warn{display:flex;align-items:center;gap:8px;margin-top:auto;padding:10px 12px;border-radius:8px;background:var(--amber-50);color:var(--amber-700);font-size:13px;font-weight:500}
+.db-wbars+.db-warn{margin-top:16px}
+.db-warn svg{width:16px;height:16px}
+
+.db-st{height:22px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.db-st svg{width:12px;height:12px}
+.db-st.new{background:var(--blue-50);color:var(--blue)}
+.db-st.progress{background:var(--amber-50);color:var(--amber-700)}
+.db-st.review{background:var(--info-50);color:var(--info)}
+.db-st.returned{background:var(--red-50);color:var(--red-700)}
+.db-st.approved{background:var(--green-50);color:var(--green)}
+.db-st.pending{background:var(--n100);color:var(--n700)}
+
+
+/* popovers: filters and custom range reuse .pop.filter; export reuses .pop.menu */
+#pop-db-range{width:320px}
+.db-dates{display:flex;flex-direction:column;gap:12px}
+.db-date{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:var(--n700)}
+.db-date input{height:38px;padding:0 12px;border:1px solid var(--stroke);border-radius:8px;font-size:14px;color:var(--n900);background:#fff}
+.db-date input:focus{border-color:var(--blue)}
+#pop-db-export{min-width:167px}
+#pop-db-export .mi svg{width:18px;height:18px}
+
+/* tooltip for ⓘ and truncated text: wraps, unlike the shared nowrap .ftip */
+.db-tip{position:fixed;z-index:130;max-width:280px;padding:8px 10px;border-radius:6px;background:#1f2a37;color:#f9fafb;font-size:12px;font-weight:500;line-height:18px;pointer-events:none;opacity:0;transition:opacity .12s;box-shadow:0 12px 16px -4px rgba(16,24,40,.08)}
+.db-tip.show{opacity:1}
+
+/* motion: sections fade in once, bars and meters grow, all of it off for reduced motion */
+.db-enter .db-sec{animation:dbIn .4s ease-out both;animation-delay:calc(var(--i,0) * 40ms)}
+@keyframes dbIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.db-grow .db-wfill,.db-grow .db-meter i{animation:dbGrow .8s cubic-bezier(.3,.7,.2,1) both}
+@keyframes dbGrow{from{width:0}}
+.db-flash{animation:dbFlash .6s ease-out}
+@keyframes dbFlash{from{opacity:.35}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  .db-enter .db-sec,.db-grow .db-wfill,.db-grow .db-meter i,.db-flash{animation:none}
+  .db-btn.spin .db-ic svg{animation:none}
+}
+
+/* ===================== phase 2: charts W05–W17 ===================== */
+.db-ch-top{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;font-size:14px;color:var(--n700);margin-bottom:12px}
+.db-ch-top>b{font-size:20px;font-weight:600;color:var(--n900)}
+.db-vsep{width:1px;height:16px;background:var(--n300)}
+.db-ch-foot{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;line-height:20px;color:var(--n600)}
+.db-ch-foot b{font-weight:600;color:var(--n900)}
+.db-ch-foot.warn{padding:8px 12px;border-radius:8px;background:var(--amber-50);color:var(--amber-700);font-weight:500}
+.db-ch-foot.warn svg{width:16px;height:16px}
+.db-chart{position:relative;width:100%;min-width:0}
+.db-chart svg{display:block;overflow:visible}
+.db-chart text{font-family:var(--font)}
+.db-gridln{stroke:var(--n100);stroke-width:1}  /* chart grid lines (was .db-grid, which is also the page grid, so every icon on the page picked up this stroke) */
+.db-ax{font-size:11px;fill:var(--n500)}
+.db-ax-t{fill:var(--n900);font-weight:600}
+.db-target{stroke:var(--n900);stroke-width:1.2;stroke-dasharray:5 4}
+.db-ln{fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.db-ln.dash{stroke-width:1.8;stroke-dasharray:5 5}
+.db-area{opacity:.12;stroke:none}
+.db-gap{fill:var(--amber);opacity:.14}
+.db-pt{stroke:#fff;stroke-width:1.5}
+.db-val{font-size:12px;font-weight:600;fill:var(--n900)}
+.db-hl{stroke:var(--n400);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+.db-hp{fill:#fff;stroke-width:2.5;opacity:0}
+.db-hl.on,.db-hp.on{opacity:1}
+.db-hit{fill:transparent}
+.db-hbg{fill:var(--n100);opacity:0}
+.db-hbg.on{opacity:1}
+.db-bar{transition:opacity .12s}
+.db-hov.hov .db-bar:not(.on){opacity:.4}
+/* donut / pie */
+.db-donut{height:100%;display:flex;align-items:center;justify-content:center;gap:28px}
+.db-card-bd>.db-xwrap,.db-card-bd>.db-hov:only-child,.db-card-bd>.db-att{flex:1;display:flex;flex-direction:column;justify-content:center}  /* a donut, a bar list on its own or «حضوري اليوم» sits in the middle of its card, however tall the row makes it */
+.db-sl{fill:none;transition:stroke-width .15s,opacity .15s}
+.db-hov.hov .db-sl:not(.on){opacity:.35}
+.db-sl.on{stroke-width:calc(var(--sw) * 1px + 6px)!important}
+.db-dn-v{font-size:22px;font-weight:600;fill:var(--n900)}
+.db-dn-l{font-size:12px;fill:var(--n500)}
+.db-legend-v{list-style:none;display:flex;flex-direction:column;gap:8px;min-width:0}
+.db-legend-v li{display:grid;grid-template-columns:10px minmax(0,1fr) auto 40px;align-items:center;gap:8px;font-size:13px;color:var(--n700);transition:opacity .15s}
+.db-legend-v li i{width:10px;height:10px;border-radius:3px}
+.db-legend-v li b{font-weight:600;color:var(--n900);font-variant-numeric:tabular-nums}
+.db-legend-v li .p{color:var(--n500);text-align:left;font-variant-numeric:tabular-nums}
+.db-hov.hov .db-legend-v li[data-u]:not(.on){opacity:.4}
+/* legend with on/off series */
+.db-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}
+.db-lg{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 4px;border-radius:4px;font-size:12px;color:var(--n700)}
+button.db-lg:hover{background:var(--n50)}
+.db-lg i{width:14px;height:3px;border-radius:2px;background:var(--c)}
+.db-lg.dash i{background:repeating-linear-gradient(90deg,var(--c) 0 4px,transparent 4px 7px)}
+.db-lg[aria-pressed="false"]{color:var(--n400);text-decoration:line-through}
+.db-lg[aria-pressed="false"] i{opacity:.35}
+.db-lg:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+/* horizontal bars */
+.db-hb{display:flex;flex-direction:column;gap:6px}
+.db-hb-row{display:grid;grid-template-columns:96px minmax(0,1fr) 84px;align-items:center;gap:12px;padding:7px 8px;border-radius:8px;transition:opacity .15s,background .15s}
+.db-hb.wide-l .db-hb-row{grid-template-columns:150px minmax(0,1fr) 40px}
+.db-hb-row:hover{background:var(--n50)}
+.db-hov.hov .db-hb-row:not(.on){opacity:.4}
+.db-hb-l{font-size:13px;color:var(--n700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-hb-track{position:relative;height:12px;border-radius:3px;background:var(--n100)}
+.db-hb-track .db-wfill{border-radius:3px}
+.db-hb-target{position:absolute;top:-4px;bottom:-4px;width:0;border-inline-start:1.5px dashed var(--n900);z-index:1}
+.db-hb-v{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:13px;color:var(--n500);white-space:nowrap;font-variant-numeric:tabular-nums}
+.db-hb-v b{font-weight:600;color:var(--n900)}
+.db-tn svg{width:14px;height:14px}
+.db-tn.ok{color:var(--green)}.db-tn.near{color:var(--amber-700)}.db-tn.far{color:var(--red-700)}
+.db-legend.static{margin-top:14px}
+/* 100% stacked bar */
+.db-stack{display:flex;flex-direction:column;gap:16px;padding-top:8px}
+.db-stack-bar{display:flex;height:28px;border-radius:6px;overflow:hidden;gap:2px;background:var(--n100)}
+.db-stack-bar .db-wfill{height:100%;transition:opacity .15s;border-radius:0}
+.db-hov.hov .db-stack-bar .db-wfill:not(.on),.db-stack.has-sel .db-wfill:not([aria-pressed="true"]){opacity:.4}
+.db-stack-bar button.db-wfill{cursor:pointer}
+.db-stack-bar button.db-wfill:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+/* W10 stepper */
+.db-steps-flow{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding-top:12px}
+.db-steps-flow li{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px 12px 14px;border:1px solid var(--stroke-2);border-radius:10px;background:var(--n50)}
+.db-steps-flow li:not(:last-child)::after{content:"";position:absolute;top:50%;left:-11px;width:10px;height:10px;border-top:1.5px solid var(--n400);border-left:1.5px solid var(--n400);transform:translateY(-50%) rotate(-45deg)}
+.db-steps-flow li.hot{border-color:var(--amber);background:var(--amber-50)}
+.db-steps-flow li.done{background:var(--green-50);border-color:var(--green-100)}
+.db-steps-flow .t{font-size:13px;font-weight:500;color:var(--n700)}
+.db-steps-flow b{font-size:24px;font-weight:600;line-height:32px;color:var(--n900)}
+.db-steps-flow .s{font-size:12px;color:var(--n500)}
+.db-flag{position:absolute;top:-10px;inset-inline-start:10px;height:20px;padding:0 8px;border-radius:999px;background:var(--amber-700);color:#fff;font-size:11px;font-weight:600;display:inline-flex;align-items:center}
+/* W13 */
+.db-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding-top:4px}
+.db-tile{display:flex;flex-direction:column;gap:6px;padding:16px;border:1px solid var(--stroke-2);border-radius:10px;background:var(--n50)}
+.db-tile .t{font-size:13px;font-weight:500;color:var(--n700)}
+.db-tile b{font-size:26px;font-weight:600;line-height:34px;color:var(--n900)}
+.db-tile b small{font-size:13px;font-weight:500;color:var(--n600)}
+.db-tile .s,.db-tile .db-cmp{font-size:12px;color:var(--n500)}
+.db-tile .db-cmp.down-good{color:var(--green)}
+.narrow .db-tiles{grid-template-columns:1fr}
+.narrow .db-tile{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
+.narrow .db-tile .t{flex-basis:100%}
+/* tables (W14, W17): horizontal scroll inside the card when the columns don't fit */
+.db-tblwrap{overflow-x:auto;margin:0 -20px;padding:0 20px}
+.db-tbl{width:100%;border-collapse:collapse;font-size:13px;color:var(--n700);white-space:nowrap}
+.db-tbl th,.db-tbl td{padding:0 12px;height:56px;border-bottom:1px solid var(--stroke);text-align:right;vertical-align:middle}
+.db-tbl thead th{height:40px;font-size:12px;font-weight:500;color:var(--n500);background:var(--n50);border-bottom:1px solid var(--stroke)}
+.db-tbl thead th:first-child{border-radius:0 8px 8px 0}.db-tbl thead th:last-child{border-radius:8px 0 0 8px}
+.db-tbl thead button{display:inline-flex;align-items:center;gap:4px;font:inherit;color:inherit;border-radius:4px;padding:2px 4px;margin:0 -4px}
+.db-tbl thead button:hover{color:var(--n900)}
+.db-tbl thead button:focus-visible{outline:2px solid var(--blue)}
+.db-sortic{display:inline-flex;width:12px}.db-sortic svg{width:12px;height:12px}
+.db-tbl tbody th{font-weight:500;color:var(--n900)}
+.db-tbl tbody tr:last-child>*{border-bottom:0}
+.db-tbl td{font-variant-numeric:tabular-nums}
+.db-tbl td.neg{color:var(--red-700);font-weight:600}
+.db-tbl tr.pick{cursor:pointer}
+.db-tbl tr.pick:hover>*,.db-tbl tr[data-row]:hover>*{background:var(--n50)}
+.db-tbl tr.pick.sel>*{background:var(--blue-50)}
+.db-tbl tr[data-row]{cursor:pointer}
+.db-tbl tr:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.db-otc,.db-used{display:inline-flex;align-items:center;gap:8px;min-width:120px}
+.db-otc .db-meter,.db-used .db-meter{width:64px;height:6px;border-radius:3px}
+.db-otc b,.db-used b{font-weight:600;color:var(--n900);min-width:38px}
+.db-otc.ok i{background:var(--green-500)}.db-otc.near i{background:var(--amber)}.db-otc.far i{background:var(--red)}
+.db-used.near i{background:var(--amber)}.db-used.over i{background:var(--red)}.db-used.over b{color:var(--red-700)}
+.db-clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:var(--n900);font-weight:500;line-height:20px}
+.db-who{display:inline-flex;flex-direction:column;align-items:flex-start;gap:4px}
+.db-dd{display:block;color:var(--n900)}
+.db-tbl .db-due{font-size:12px}
+/* W16 heatmap */
+.db-hm{display:grid;grid-template-columns:64px repeat(9,minmax(0,1fr));gap:4px;align-items:center}
+.db-hm-h{font-size:11px;color:var(--n500);text-align:center}
+.db-hm-d{font-size:12px;color:var(--n700)}
+.db-hm-c{height:34px;border-radius:4px;background:rgba(29,102,242,var(--a));transition:opacity .15s}
+.db-hov.hov .db-hm-c:not(.on){opacity:.55}
+.db-hm-c.on{outline:2px solid var(--n900);outline-offset:-2px}
+.db-hm-legend{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;color:var(--n500)}
+.db-hm-legend i{width:140px;height:8px;border-radius:4px;background:linear-gradient(to left,rgba(29,102,242,.06),rgba(29,102,242,1))}
+.db-hm-note{margin-inline-start:auto}
+/* chart tooltip: title + one row per series (§6.2) */
+.db-ctip{position:fixed;z-index:130;min-width:150px;padding:10px 12px;border-radius:8px;background:#fff;border:1px solid var(--stroke);box-shadow:0 12px 24px -6px rgba(16,24,40,.16);font-size:12px;color:var(--n700);pointer-events:none;opacity:0;transition:opacity .12s;display:flex;flex-direction:column;gap:6px}
+.db-ctip.show{opacity:1}
+.db-ctip>b{font-size:12px;font-weight:600;color:var(--n900)}
+.db-ctip .r{display:grid;grid-template-columns:10px 1fr auto;align-items:center;gap:8px}
+.db-ctip .r i{width:10px;height:10px;border-radius:3px}
+.db-ctip .r b{font-weight:600;color:var(--n900);font-variant-numeric:tabular-nums}
+/* narrow W03 next to W17: requests take the slack so the button sits at the bottom */
+/* build-in on the first load (§9): lines draw, bars rise in sequence, slices turn, the rest fades in */
+.db-grow .db-ln:not(.dash){stroke-dasharray:1;animation:dbDraw .9s cubic-bezier(.3,.7,.2,1) both}
+@keyframes dbDraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.db-grow .db-fade{animation:dbFade .4s .6s both}
+@keyframes dbFade{from{opacity:0}}
+.db-grow .db-bar{transform-box:fill-box;transform-origin:50% 100%;animation:dbBar .6s cubic-bezier(.3,.7,.2,1) both;animation-delay:calc(var(--d,0) * 35ms)}
+@keyframes dbBar{from{transform:scaleY(0)}}
+.db-grow .db-sl{animation:dbSlice .8s cubic-bezier(.3,.7,.2,1) both}
+@keyframes dbSlice{from{stroke-dasharray:0 var(--C)}}
+.db-grow .db-hm-c,.db-grow .db-steps-flow li,.db-grow .db-tile{animation:dbFade .5s both}
+@media (prefers-reduced-motion:reduce){.db-grow .db-ln,.db-grow .db-fade,.db-grow .db-bar,.db-grow .db-sl,.db-grow .db-hm-c,.db-grow .db-steps-flow li,.db-grow .db-tile{animation:none}}
+
+/* ===================== phase 3: control and interaction ===================== */
+/* density (§7.2): padding 24 / 20 / 16 · gaps 24 / 16 / 12 · table rows 56 / 48 / 40; font sizes never change */
+.db-grid,.db-modal{--db-pad:24px;--db-gap:24px;--db-row:56px}  /* the modal too, so the «تخصيص القسم» preview card gets its padding */
+.db-grid{gap:var(--db-gap)}
+.db-grid.dens-medium,.db-modal.dens-medium{--db-pad:20px;--db-gap:16px;--db-row:48px}
+.db-grid.dens-compact,.db-modal.dens-compact{--db-pad:16px;--db-gap:12px;--db-row:40px}
+.db-card-hd{padding:var(--db-pad) 16px 16px;border-bottom:1px solid var(--stroke);flex-wrap:wrap;position:relative}  /* a grey line under every section title, edge to edge (user request, 2 Nov 2026) */
+.db-card-bd{padding:16px 16px var(--db-pad)}  /* 16px left and right on every section (user request, 2 Nov 2026); top and bottom follow the density */
+.db-tblwrap{margin:0 calc(-1 * var(--db-pad, 20px));padding:0 var(--db-pad, 20px)}
+.db-tbl th,.db-tbl td{height:var(--db-row, 56px)}
+/* KPI cards per row (2 / 3 / 6): the last row stretches when some cards are hidden (§3.3) */
+.db-kpis{display:flex;flex-wrap:wrap;gap:16px}
+.db-kpis>.db-kpi{flex:1 1 calc((100% - (var(--per-row, 3) - 1) * 16px) / var(--per-row, 3));min-width:0}
+@media (max-width:1279px){.db-kpis{--per-row:3!important}}
+@media (max-width:1023px){.db-kpis{--per-row:2!important}}  /* §11: two cards a row under 1024px */
+
+/* card header: drag handle on the start, actions on the end — shown on hover / keyboard focus, always on touch (§5.1) */
+.db-drag{width:24px;height:28px;margin-inline-start:-8px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--n500);cursor:grab;transition:background .15s;flex-shrink:0}
+.db-drag:hover{background:var(--n100);color:var(--n700)}
+.db-drag:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.db-card-ttl{flex:1}
+.db-card-acts{display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .15s;flex-shrink:0}
+.db-card:hover .db-card-acts,.db-card:focus-within .db-card-acts{opacity:1}  /* the drag handle always shows (user request, 2 Nov 2026) */
+@media (hover:none){.db-card-acts{opacity:1}}
+.db-act{position:relative;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--n500);transition:background .15s,color .15s}
+.db-act:hover,.db-act[aria-expanded="true"]{background:var(--n100);color:var(--n900)}
+.db-act:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.db-act svg{width:20px;height:20px}  /* 20px icons in a 32px button (user request, 2 Nov 2026; were 16 / 28) */
+.db-act-dot{position:absolute;top:3px;left:3px;width:7px;height:7px;border-radius:50%;background:var(--blue);border:1.5px solid #fff}
+.db-card-acts:has(.db-act-dot){opacity:1}   /* a customised section keeps its dot visible */
+.db-card:hover{box-shadow:0 6px 16px rgba(16,24,40,.08)}
+.db-secchip{flex-basis:100%;width:max-content;max-width:100%;margin-top:8px}
+/* page drag: the dragged card fades, the drop target gets a dotted outline (§5.1) */
+.db-sec.db-dragging{opacity:.45}
+.db-sec.db-drop>.db-card,.db-sec.db-lifted>.db-card{outline:2px dashed var(--blue);outline-offset:4px}
+.db-sec.db-lifted>.db-card{box-shadow:0 12px 28px rgba(16,24,40,.14)}
+.db-allhidden .empty-state{display:flex;border:1px dashed var(--n300);border-radius:12px;padding:32px}
+
+/* switch: there was none in the app, so one small one for every on/off here */
+.db-switch{position:relative;width:36px;height:20px;border-radius:999px;background:var(--n300);flex-shrink:0;transition:background .15s}
+.db-switch i{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(16,24,40,.2);transition:transform .15s}
+.db-switch[aria-checked="true"]{background:var(--blue)}
+.db-switch[aria-checked="true"] i{transform:translateX(-16px)}
+.db-switch:disabled{opacity:.55;cursor:not-allowed}
+.db-switch:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* layers on the app .scrim: modal fades + scales from 97% (240ms), drawer slides in from the left (RTL) */
+.db-layer.open{display:flex}
+.db-modal{position:relative;display:flex;flex-direction:column;max-height:calc(100vh - 48px);background:#fff;border-radius:16px;box-shadow:0 24px 48px -12px rgba(16,24,40,.24);animation:dbModalIn .24s ease-out;overflow:hidden}
+@keyframes dbModalIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.db-modal.sec{width:min(1080px,calc(100vw - 48px));height:min(720px,calc(100vh - 48px))}
+.db-modal.xl{width:calc(100vw - 64px);height:calc(100vh - 64px)}
+.db-m-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--stroke)}
+.db-m-hd h2{font-size:18px;font-weight:600;line-height:28px;color:var(--n900)}
+.db-m-hd p{font-size:13px;color:var(--n500)}
+.db-m-acts{display:flex;align-items:center;gap:8px}
+.db-m-x{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--n700)}
+.db-m-x:hover{background:var(--n100)}
+.db-m-x:focus-visible{outline:2px solid var(--blue)}
+.db-m-body{flex:1;min-height:0;display:grid;grid-template-columns:380px minmax(0,1fr)}
+.db-m-set{overflow-y:auto;padding:20px 24px;border-left:1px solid var(--stroke);display:flex;flex-direction:column;gap:22px}
+.db-m-prev{overflow:auto;padding:24px;background:var(--n50)}
+.db-m-prev>.db-card{height:auto;max-width:720px;margin:0 auto}
+.db-m-prev .db-card:hover{box-shadow:var(--shadow-xs)}
+@media (max-width:1023px){.db-m-body{grid-template-columns:1fr}.db-m-prev{display:none}}
+.db-m-grp h3{font-size:13px;font-weight:600;color:var(--n900);margin-bottom:10px}
+.db-m-note{margin-top:8px;font-size:12px;color:var(--n500)}
+.db-input{width:100%;height:40px;padding:0 12px;border:1px solid var(--stroke);border-radius:8px;font-size:14px}
+.db-input:focus{border-color:var(--blue)}
+.db-types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.db-type{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border:1px solid var(--stroke);border-radius:10px;font-size:12px;font-weight:500;color:var(--n700);text-align:center;transition:border-color .15s,background .15s}
+.db-type:hover{border-color:var(--n300)}
+.db-type.on{border-color:var(--blue);background:var(--blue-50);color:var(--blue)}
+.db-type:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.db-m-grp .db-seg{flex-wrap:wrap}
+.db-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.db-field{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:500;color:var(--n700)}
+.db-field .select,.rl-cond .select{color:var(--n900)}  /* the filter panel's dropdown (popovers.css); here it always has a value */
+.db-field .select:focus-visible,.db-field .dd-opt:focus-visible,.rl-cond .select:focus-visible,.rl-cond .dd-opt:focus-visible{outline:2px solid var(--blue);outline-offset:0}
+.db-field .dd-opt,.rl-cond .dd-opt{width:100%;text-align:right}
+.db-m-row{display:flex;align-items:center;gap:10px;min-height:36px;font-size:13px;color:var(--n800)}
+.db-m-name{flex:1;min-width:0}
+.db-m-sw{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.db-swatches{display:flex;gap:4px}
+.db-swatch{width:18px;height:18px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.db-swatch.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--c)}
+.db-swatch:focus-visible{outline:2px solid var(--n900);outline-offset:3px}
+.db-m-ft{display:flex;align-items:center;gap:10px;padding:16px 24px;border-top:1px solid var(--stroke)}
+.db-m-reset{margin-inline-end:auto}  /* the text button on the right, the two buttons on the left */
+.db-m-ft>.db-btn{min-width:96px}
+.db-m-ft.x{justify-content:space-between}
+.db-xtoggle{cursor:pointer;font-weight:500}
+.db-m-hint{font-size:12px;color:var(--n500)}
+.db-m-xbody{flex:1;min-height:0;overflow:auto;padding:24px}
+.db-m-xbody>.db-card{border:0;box-shadow:none;height:auto}
+.db-m-xbody>.db-card>.db-card-hd{display:none}
+.db-m-xbody>.db-card>.db-card-bd{padding:0}
+.db-xmenu{position:relative}
+.db-xmenu-list{position:absolute;top:calc(100% + 6px);left:0;z-index:5;min-width:160px;display:flex;flex-direction:column;gap:4px;padding:8px 6px;background:#fff;border:1px solid var(--stroke);border-radius:12px;box-shadow:0 20px 24px -4px rgba(16,24,40,.08),0 8px 8px -4px rgba(16,24,40,.03)}
+.db-xmenu-list[hidden]{display:none}
+/* drawer «تخصيص اللوحة» */
+.db-layer.drawer{justify-content:flex-end;align-items:stretch}   /* RTL: flex-end is the left edge (§7: the drawer opens from the left) */
+.db-drawer{width:420px;max-width:100vw;height:100%;display:flex;flex-direction:column;background:#fff;border-radius:0 16px 16px 0;box-shadow:8px 0 32px rgba(15,23,41,.14);animation:drawerIn .22s ease-out}
+.db-dr-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 20px 16px;border-bottom:1px solid var(--stroke)}
+.db-dr-hd h2{font-size:18px;font-weight:600;line-height:28px}
+.db-dr-hd p{font-size:13px;color:var(--n500)}
+.db-dr-body{flex:1;overflow-y:auto;padding:8px 20px 20px;display:flex;flex-direction:column;gap:22px}
+.db-dr-grp h3{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:600;color:var(--n900);margin:12px 0 8px}
+.db-dr-grp h3 span{font-size:12px;font-weight:500;color:var(--n500)}
+.db-dr-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.db-dr-list li{display:flex;align-items:center;gap:8px;min-height:44px;padding:4px 8px;border:1px solid var(--stroke-2);border-radius:8px;background:#fff;font-size:13px;color:var(--n800)}
+.db-dr-list li.dragging{opacity:.45}  /* also the rule rows in «إدارة القواعد» (rules.js) */
+.db-dr-list li.drop{outline:2px dashed var(--blue);outline-offset:1px}
+.db-dr-grip{display:flex;color:var(--n400);cursor:grab}
+.db-dr-ic{width:28px;height:28px;border-radius:6px;background:var(--n100);color:var(--n600)}
+.db-dr-ic svg{width:16px;height:16px}
+.db-dr-n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-dr-lock{display:flex;color:var(--n500)}
+.db-dr-move{display:flex;gap:2px}
+.db-dr-mv{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--n600)}
+.db-dr-mv:hover:not(:disabled){background:var(--n100)}
+.db-dr-mv:disabled{opacity:.3;cursor:default}
+.db-dr-mv:focus-visible{outline:2px solid var(--blue)}
+.db-dr-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;font-size:13px;color:var(--n800)}
+.db-dr-ft{display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--stroke)}
+.db-dr-ft>.db-btn{flex:1}
+.db-dr-confirm{flex:1;display:flex;flex-direction:column;gap:10px}
+.db-dr-confirm p{font-size:13px;color:var(--n800)}
+.db-dr-confirm div{display:flex;gap:10px}
+.db-dr-confirm .db-btn{flex:1}
+.db-btn.db-danger{background:var(--red);color:#fff}
+.db-btn.db-danger:hover{background:var(--red-700)}
+.db-seg .ntab:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+
+.db-val.sm{font-size:10.5px;font-weight:500;fill:var(--n600)}
+@media (prefers-reduced-motion:reduce){.db-modal,.db-drawer{animation:none}.db-switch,.db-switch i{transition:none}}
+/* tooltips sit above the dashboard layers (.scrim is 200) but under the toast (300) */
+.db-tip,.db-ctip{z-index:250}
+
+/* ---------- W19 حضوري اليوم (Figma 3079:169645): check-in time + tag, three numbers, the work week as bars ---------- */
+.db-att{display:flex;flex-direction:column;gap:24px}  /* starts under the title like the other sections, fixed gaps (was spread over the card height) */
+.db-att-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.db-att-in{display:flex;flex-direction:column;gap:2px}
+.db-att-in b{font-size:22px;font-weight:700;line-height:28px;color:var(--blue-800)}
+.db-att-in span{font-size:12px;color:var(--n500)}
+.db-att-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--stroke-2);border-radius:10px;background:var(--n50)}  /* one strip, three cells split by thin lines */
+.db-att-stats div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 8px;text-align:center}
+.db-att-stats div+div{border-right:1px solid var(--stroke-2)}
+.db-att-stats dd{font-size:16px;font-weight:600;line-height:22px;color:var(--n900)}
+.db-att-stats dt{font-size:12px;color:var(--n500)}
+.db-week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;list-style:none;margin:0;padding:0}
+.db-week li{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:12px;color:var(--n600)}
+.db-week i{width:100%;height:5px;border-radius:3px;background:var(--green-500)}
+.db-week li.today i{background:var(--blue)}
+.db-week li.today span{color:var(--blue);font-weight:600}
+.db-week li.next i{background:var(--n100)}  /* not yet: a light grey bar (the dashed outline looked broken at 5px) */
+.db-week li.next span{color:var(--n400)}
+
+/* ---------- W18 as vertical columns (Figma 3079:169683): the count above each column, the bucket under one baseline ---------- */
+.db-wcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));align-items:end}
+.db-wcol{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0 6px;border-radius:8px;transition:opacity .15s,background .15s}
+.db-wcol:hover{background:var(--n50)}
+.db-wcol[aria-pressed="true"]{background:var(--blue-50)}
+.db-wcols:hover .db-wcol:not(:hover):not([aria-pressed="true"]),.db-wcols.has-sel .db-wcol:not([aria-pressed="true"]):not(:hover){opacity:.4}
+.db-wcol:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.db-wcol-area{width:100%;height:180px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;border-bottom:1px solid var(--stroke)}
+.db-wcols.lg .db-wcol-area{height:300px}
+.db-wcol-v{font-size:13px;font-weight:600;color:var(--n900)}
+.db-wcol-fill{width:42px;max-width:60%;min-height:2px;border-radius:4px 4px 0 0;background:var(--c);transform-origin:bottom}
+.db-wcol-l{font-size:13px;color:var(--n700);white-space:nowrap}
+.db-wcols+.db-warn{margin-top:16px}
+.db-grow .db-wcol-fill{animation:dbGrowY .8s cubic-bezier(.3,.7,.2,1) both}
+@keyframes dbGrowY{from{transform:scaleY(0)}}
+@media (prefers-reduced-motion:reduce){.db-grow .db-wcol-fill{animation:none}}
+
+/* ---------- sticky filter bar (user request, 2 Nov 2026): «الفترة / تصفية» stick to the top of the page; once stuck the W00 actions join the row ---------- */
+.db-sticky{grid-column:span 12;position:sticky;top:-24px;z-index:20;margin:0 -24px;padding:8px 24px 0;background:#fff;transition:box-shadow .15s}  /* 8 + the grid gap = 32px under the title; top:-24px cancels .db-scroll's padding */
+.db-sticky.stuck{padding:12px 24px;box-shadow:0 1px 0 var(--stroke),0 6px 12px -8px rgba(16,24,40,.12)}
+.db-acts-slot{display:contents}
+
+/* ---------- copyright, scrolls with the dashboard content instead of sitting fixed below the card (user request, 2 Nov 2026): text · our logo · © year ---------- */
+.db-foot{grid-column:span 12;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;padding:16px 0 0;font-size:12px;color:var(--n600)}
+.db-foot img{height:18px;width:auto}
+.db-sticky.stuck .db-acts{margin-inline-start:auto}  /* stuck: the actions sit at the far left of the period row */
+.db-card-bd>.db-xwrap{padding:32px 0 24px}  /* more white above and below a donut, 48px each side with the card padding (user request, 2 Nov 2026) */
+
+/* ---------- W22 رصيدي الوظيفي — rings (balances) · my requests (number + tag) · the summary strip, from the ring version + the «Overview» reference ---------- */
+.db-ov{flex:1;display:flex;flex-direction:column;margin:-16px -16px calc(-1 * var(--db-pad))}  /* edge to edge inside the card: the dividers reach the sides */
+.db-ov-lbl{font-size:13px;font-weight:600;color:var(--n700)}
+.db-mx-rings{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:20px 20px 16px}
+.db-mx-ring{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.db-ring-g{position:relative;width:72px;height:72px;margin-bottom:4px}
+.db-ring-trk{fill:none;stroke:var(--n100);stroke-width:7}
+.db-ring-val{fill:none;stroke-width:7;stroke-linecap:round}
+.db-grow .db-ring-val{animation:dbRing 1s cubic-bezier(.3,.7,.2,1) both}
+@keyframes dbRing{from{stroke-dasharray:0 var(--C)}}
+.db-ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.db-ring-c b{font-size:17px;font-weight:700;color:var(--blue-800)}
+.db-ring-c small{font-size:10px;color:var(--n500)}
+.db-ring-t{font-size:12px;font-weight:600;color:var(--n900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.db-ring-s{font-size:11px;color:var(--n500)}
+.db-mx-reqs{display:flex;flex-direction:column;gap:10px;padding:14px 20px 16px;border-top:1px solid var(--stroke)}
+.db-mx-reqrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.db-mx-req{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:10px 12px;border:1px solid var(--stroke-2);border-radius:10px;min-width:0}
+.db-mx-req b{font-size:20px;font-weight:700;line-height:24px;color:var(--blue-800)}
+@media (prefers-reduced-motion:reduce){.db-grow .db-ring-val{animation:none}}
+.db-ov-foot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 1px repeat(2,minmax(0,1fr));align-items:center;gap:0 20px;padding:14px 20px;border-top:1px solid var(--stroke);flex:1;align-content:center}  /* takes the white left when the row makes the card taller, and keeps the text in its middle: same space above and below (user request, 2 Nov 2026) */
+.db-ov-foot div{display:flex;flex-direction:column;gap:4px}
+.db-ov-foot dt{font-size:12px;color:var(--n500)}
+.db-ov-foot dd{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--n900)}  /* black numbers; «يُخصم» keeps its warning colour (user request, 2 Nov 2026) */
+.db-ov-foot .db-cmp{font-size:12px;font-weight:500}
+.db-ov-div{align-self:stretch;background:var(--stroke)}
+.db-ov-warn{color:var(--amber-700)!important}
+@media (max-width:1023px){.db-ov-foot{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.db-ov-div{display:none}}

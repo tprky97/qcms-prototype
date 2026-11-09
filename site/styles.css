@@ -1,0 +1,725 @@
+:root{
+  --blue:#1d66f2; --blue-700:#0052f2;  /* Makeen primary/450, hover primary/500 */ --blue-800:#002f8a; --blue-900:#00256d; --page:#eef3fa; --blue-50:#ecf2fd; --blue-100:#e6eefe; --blue-150:#dce7fd; --avatar-bg:#dce7fd; --avatar-tx:#2e71f4;
+  --n900:#111927; --n800:#1f2a37; --n700:#384250; --n600:#4d5761; --n500:#6c737f; --n400:#9da4ae; --n300:#d2d6db;
+  --stroke:#e5e7eb; --stroke-2:#eaecf0; --n100:#f3f4f6; --n50:#f9fafb; --white:#fff;
+  --red:#d92d20; --red-700:#b42318; --red-50:#fef3f2; --amber-50:#fffaeb; --amber-900:#93370d; --green:#067647;
+  --body-tx:#161616;
+  /* home dashboard (spec v1.9): semantic / chart colours, from the values the app and spec already use */
+  --amber:#dc6803; --amber-700:#b54708; --green-500:#079455; --green-50:#ecfdf3; --sky:#2e90fa; --info:#175cd3; --info-50:#eff8ff;
+  --teal:#0e9384; --indigo:#6172f3; --green-100:#abefc6;  /* phase 2: the categorical type colours (with --blue, --sky, --amber) and the completed stage border */
+  --shadow-xs:0 1px 2px rgba(16,24,40,.05);
+  --font:"IBM Plex Sans Arabic",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--n900);background:var(--page);-webkit-font-smoothing:antialiased;min-width:1280px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit;border:0;outline:0;background:none;color:var(--n900)}
+svg{display:block;flex-shrink:0}
+.i{display:inline-flex}
+
+/* ---------- page background ---------- */
+.app{position:relative;height:100vh;min-height:760px;display:flex;flex-direction:column;overflow:hidden;background:var(--page)}  /* one flat light blue, no gradient */
+
+/* ---------- utility bar ---------- */
+.utility{height:40px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:12px;font-weight:500;color:var(--n800)}
+.utility .gov{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--n900)}
+.utility .gov img{width:20px;height:14px}
+.utility .gov a{display:flex;align-items:center;gap:4px;color:var(--blue);font-weight:400;text-decoration:none}
+.utility .tools{display:flex;align-items:center;gap:16px}
+.utility .tool{display:flex;align-items:center;gap:4px;padding:4px 0;border-radius:6px}
+.utility .tool{transition:color .15s}
+.utility .tool:hover{color:var(--blue)}
+.utility .tool:hover svg [fill]:not([fill="none"]),.utility .tool[aria-expanded="true"] svg [fill]:not([fill="none"]){fill:var(--blue)}
+.utility .tool:hover svg [stroke],.utility .tool[aria-expanded="true"] svg [stroke]{stroke:var(--blue)}
+.utility .tool[aria-expanded="true"]{color:var(--blue)}
+.utility .sep{width:1px;height:19px;background:var(--n300)}
+
+/* ---------- header ---------- */
+.header{height:61px;display:flex;align-items:center;justify-content:space-between;padding:8px 0 8px 16px}
+.header .start{display:flex;align-items:center;gap:9px}
+.logo{width:84px;display:flex;padding-right:16px}  /* starts 16px from the right edge, mirroring the account circle on the left */
+.logo img{width:61px}
+/* level 1 widened: its collapse button moves up next to the logo (lined up with the menu items edge, 188px)
+   and the search starts where the white content does (200px) */
+.hd-collapse{display:none;width:32px;height:32px;flex-shrink:0;border-radius:10px;align-items:center;justify-content:center;transition:background .15s}
+.hd-collapse:hover{background:rgba(17,25,39,.07)}
+.hd-collapse svg{width:20px;height:20px}
+.hd-collapse svg path[fill^="#"]{fill:var(--n700)}
+.app:has(.rail.wide) .header .start{gap:0}
+.app:has(.rail.wide) .hd-collapse{display:flex;margin:0 64px 0 12px}
+.rail.wide .rail-toggle{display:none}
+.hsearch{width:377px;height:32px;display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;border:1px solid var(--n50);border-radius:61px}
+.header .end{display:flex;align-items:center;gap:16px}
+.header .hsearch input{font-size:11px;line-height:18px}
+.hsearch i svg{width:16px;height:16px}
+/* header action buttons: 32px circles (Figma) */
+.header .rail-btn{width:32px;height:32px}
+.header .rail-btn::before{inset:-3.2px}
+.header .rail-btn.ai .core{width:22px;height:22px}
+.header .rail-btn.ai:active .core{width:19px;height:19px}
+.hicon{position:relative;width:32px;height:32px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.hicon:hover,.hicon[aria-expanded="true"]{background:var(--stroke)}
+.hicon svg{width:18px;height:18px}
+/* «إنشاء» launcher in the header */
+.hicon.plus{background:var(--blue-150);color:var(--blue)}
+.hicon.plus:hover,.hicon.plus[aria-expanded="true"]{background:var(--blue-100)}
+.hicon.plus svg{width:20px;height:20px}
+.hicon.plus svg path{stroke:currentColor}
+/* الاقتراح 2: زر البرامج يهدى (أبيض + أيقونة غامقة) والبلس ياخد أزرق البرامج */
+.header .rail-btn.platforms .orb{background:#fff;box-shadow:none;transition:background .15s}
+.header .rail-btn.platforms:hover .orb,.header .rail-btn.platforms:focus-visible .orb{background:var(--stroke);box-shadow:none}
+.header .rail-btn.platforms svg{position:relative;z-index:1;width:16px;height:16px;overflow:visible;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+/* the dots spread apart on hover, the way the old tiles did */
+.header .rail-btn.platforms svg .d{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.header .rail-btn.platforms:hover svg .d11,.header .rail-btn.platforms:focus-visible svg .d11{transform:translate(-1px,-1px)}
+.header .rail-btn.platforms:hover svg .d12,.header .rail-btn.platforms:focus-visible svg .d12{transform:translate(0px,-1px)}
+.header .rail-btn.platforms:hover svg .d13,.header .rail-btn.platforms:focus-visible svg .d13{transform:translate(1px,-1px)}
+.header .rail-btn.platforms:hover svg .d21,.header .rail-btn.platforms:focus-visible svg .d21{transform:translate(-1px,0px)}
+.header .rail-btn.platforms:hover svg .d23,.header .rail-btn.platforms:focus-visible svg .d23{transform:translate(1px,0px)}
+.header .rail-btn.platforms:hover svg .d31,.header .rail-btn.platforms:focus-visible svg .d31{transform:translate(-1px,1px)}
+.header .rail-btn.platforms:hover svg .d32,.header .rail-btn.platforms:focus-visible svg .d32{transform:translate(0px,1px)}
+.header .rail-btn.platforms:hover svg .d33,.header .rail-btn.platforms:focus-visible svg .d33{transform:translate(1px,1px)}
+.header .rail-btn.platforms:active svg{transform:scale(.92)}
+.header .rail-btn.platforms:active svg .d{transform:none}
+/* Tiles (Figma 3254-121899): radius 2.18 · inset white 0.73 · blue / teal / amber gradient / violet */
+.header .hicon.plus{color:#fff;background:linear-gradient(180deg,#5b93fa,#426de6);box-shadow:0 4px 10px rgba(46,112,245,.28),inset 0 1.2px 1.6px rgba(255,255,255,.2),inset 0 -2px 5px rgba(30,58,138,.2)}
+.header .hicon.plus:hover,.header .hicon.plus[aria-expanded="true"]{background:linear-gradient(180deg,#6b9ffb,#4b78ea);box-shadow:0 6px 16px rgba(46,112,245,.4),inset 0 1.2px 1.6px rgba(255,255,255,.2),inset 0 -2px 5px rgba(30,58,138,.2)}
+.header .hicon.plus:active{box-shadow:0 1px 4px rgba(46,112,245,.3),inset 0 2px 5px rgba(30,58,138,.28)}
+/* the + turns a quarter on hover, the way the AI ring spins and the tiles spread */
+.header .hicon.plus{transition:background .2s ease-out,box-shadow .2s ease-out}
+.header .hicon.plus svg{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.header .hicon.plus:hover svg,.header .hicon.plus:focus-visible svg,.header .hicon.plus[aria-expanded="true"] svg{transform:rotate(90deg) scale(1.1)}
+.header .hicon.plus:active svg{transform:rotate(90deg) scale(.9)}
+#pop-create{min-width:196px}
+#pop-create .mi > svg,#pop-request .mi > svg{width:18px;height:18px;flex-shrink:0}
+#pop-create .mi > svg path[fill="#161616"],#pop-request .mi > svg path[fill="#161616"]{fill:var(--n600)}  /* library (Alqemam) icons: same grey as the line icons beside them */
+.mi-cap{padding:8px 10px 2px;font-size:11px;font-weight:600;color:var(--n500)}
+.mi-cap:first-child{padding-top:2px}
+.hicon .dot{position:absolute;top:5px;left:20px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+.hicon .num{position:absolute;top:-3px;right:-4px;min-width:14px;height:14px;padding:0 3.5px;border-radius:999px;background:var(--red);border:1px solid #fff;color:#fff;font-family:var(--font);font-size:9px;font-weight:600;line-height:12px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;box-shadow:0 1px 2px rgba(16,24,40,.12);pointer-events:none}
+.hicon .num[hidden]{display:none}
+.user{display:flex;align-items:center;gap:8px;padding:2px 0;border-radius:999px}
+.header .hsep{width:1px;height:24px;flex-shrink:0;background:linear-gradient(180deg,rgba(176,183,195,0) 0%,#b0b7c3 50%,rgba(176,183,195,0) 100%)}
+.user .sep{display:none}
+/* profile chevron sits in a gray circle on hover */
+.user > svg{box-sizing:content-box;padding:4px;border-radius:50%;transition:background .15s}
+.user:hover > svg,.user[aria-expanded="true"] > svg{background:var(--stroke)}
+.user .info{display:flex;flex-direction:column;width:129px}
+.user .name{font-size:12px;font-weight:500;line-height:20px}
+.user .role{font-size:10px;color:var(--n600);line-height:16px}
+.avatar-me{width:32px;height:32px;border-radius:50%;background:var(--avatar-bg);color:var(--blue-800);font-weight:500;font-size:14px;display:flex;align-items:center;justify-content:center}
+
+/* ---------- body layout ---------- */
+.main{flex:1;display:flex;gap:0;padding:0 0 16px 0;min-height:0}
+.workspace>*{min-height:0}
+/* level 1: icons only; .wide adds the labels and pushes the content over. Sections open their menu in the side panel */
+.rail{position:relative;width:80px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:0 5px;justify-content:space-between;transition:width .25s ease-out,padding .25s ease-out}
+.rail nav{display:flex;flex-direction:column;gap:20px;overflow:hidden;margin-top:16px}  /* breathing room under the logo */
+/* الرئيسية and البريد: outline icon at rest, filled once active */
+.rail-item .i-on,.rail-item.active .i-off{display:none}
+.rail-item.active .i-on,.rail-item .i-off{display:contents}
+.rail-item.active .tile .i-on svg path.s{fill:var(--blue)}
+.rail-item.active .tile .i-on svg path.w{stroke:#fff}  /* cut-out lines on a solid icon stay white */  /* solid shapes stay filled (the rule above empties stroked paths) */
+.rail-item{position:relative;display:flex;align-items:center;gap:10px;border-radius:10px;font-size:14px;line-height:20px;color:var(--n700);text-decoration:none;text-align:right;white-space:nowrap;transition:background .15s}
+.rail-item .lbl{display:none}
+/* the floating button on level 1's edge that reopens a closed section menu (level 2): hidden until then */
+.rail-open{position:absolute;left:0;top:34px;z-index:20;width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(16,24,40,.12);transform:translate(-50%,-50%) scale(.6);opacity:0;pointer-events:none;transition:transform .2s ease-out,opacity .2s,background .15s}
+.rail-open:hover{background:var(--n100)}
+.main.has-panel.panel-closed .rail-open{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+.rail-item .tile{width:40px;height:40px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.rail-item .tile svg{width:24px;height:24px}
+.rail-item .tile svg path[fill^="#"]{fill:var(--n700)}
+.rail-item .tile svg path[stroke]{stroke:var(--n700)}
+.rail-item:hover .tile{background:rgba(17,25,39,.07)}  /* a dark tint, so it shows on the light-blue page */
+.rail-item.active{color:var(--n900);font-weight:700}
+.rail-item.active .tile{background:var(--blue-150)}  /* a shade deeper than the panel selection */
+.rail-item.active .tile svg path{fill:var(--blue)}
+.rail-item.active .tile svg path[stroke]{fill:none;stroke:var(--blue)}
+.rail-item[data-sec="mail"] .i-off svg path:first-child{fill:var(--red)}  /* the red unread dot shows only while البريد is not the active section */
+.rail.wide{width:200px;align-items:stretch;padding:0 12px}
+.rail.wide nav{gap:12px}
+.rail.wide .rail-item{width:100%;gap:2px}  /* 8px tile padding around the 24px icon + 2px = 10px to the text, as in every menu */
+.rail.wide .rail-util{gap:6px}  /* 4px margin round the 32px circle + 6px = 10px to the text */
+.rail.wide .rail-item .lbl{display:block;flex:1}
+.rail.wide .rail-item:not(.rail-util):hover{background:rgba(17,25,39,.07)}
+.rail.wide .rail-item:hover .tile{background:none}
+.rail.wide .rail-item.active{background:var(--blue-150)}
+.rail.wide .rail-bottom{align-items:stretch}
+/* help / notes / Q Stamp hover: no tint at all — the word and the icon turn blue */
+.rail-util:hover .lbl,.rail-util[aria-expanded="true"] .lbl{color:var(--blue)}
+.rail-util[aria-expanded="true"] .lbl{font-weight:700}  /* its menu is open: the selected weight, as everywhere */
+.rail-util:hover .notes-btn svg path:not([fill="none"]):not([stroke]),.rail-util[aria-expanded="true"] .notes-btn svg path:not([fill="none"]):not([stroke]){fill:var(--blue)}
+.rail-util:hover .notes-btn svg [stroke]:not([stroke="none"]),.rail-util[aria-expanded="true"] .notes-btn svg [stroke]:not([stroke="none"]){stroke:var(--blue)}
+/* open or collapsed rail: the round buttons sit 4px inside their 40px box, so the hover tint wraps them like the other rows (they never touch its edge) */
+.rail-util .rail-btn{width:32px;height:32px;margin:4px}
+.rail-util .rail-btn svg{width:18px;height:18px}
+.rail-util:hover .stamp .s-bg{transform:none}
+.rail-util:focus-visible .rail-btn::before{opacity:1}
+.rail-bottom{display:flex;flex-direction:column;gap:16px;align-items:center;padding-bottom:4px}
+.rail-btn{position:relative;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;outline:0}
+.rail-btn::before{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--blue);opacity:0;transition:opacity .15s}
+.rail-btn:focus-visible::before{opacity:1}
+
+/* platforms: tiles spread apart and links appear on hover */
+.rail-btn.platforms .orb{position:absolute;inset:0;border-radius:50%}
+/* blue orb, shared with the chat send button (Figma: Sidebar Action) */
+.rail-btn.platforms .orb,.chat-send{background:linear-gradient(180deg,#5b93fa,#426de6);box-shadow:0 4px 10px rgba(46,112,245,0),inset 0 1.2px 1.6px rgba(255,255,255,.2),inset 0 -2px 5px rgba(30,58,138,.2);transition:box-shadow .2s ease-out,inset .2s ease-out}
+.rail-btn.platforms .tiles{position:relative;width:18px;height:18px;transition:width .2s ease-out,height .2s ease-out}
+.rail-btn.platforms .tiles span{position:absolute;width:8px;height:8px;border-radius:2px;box-shadow:inset 0 .73px .73px rgba(255,255,255,.45)}
+.rail-btn.platforms .tiles span:nth-of-type(1){top:0;left:0;background:linear-gradient(180deg,#fff,#eaf1fe)}
+.rail-btn.platforms .tiles span:nth-of-type(2){top:0;right:0;background:rgba(255,255,255,.55)}
+.rail-btn.platforms .tiles span:nth-of-type(3){bottom:0;left:0;background:rgba(255,255,255,.55)}
+.rail-btn.platforms .tiles span:nth-of-type(4){bottom:0;right:0;background:linear-gradient(180deg,#fff,#dbe7fd)}
+.rail-btn.platforms .tiles i{position:absolute;background:#fff;border-radius:1px;opacity:0;transition:opacity .2s ease-out,transform .2s ease-out}
+.rail-btn.platforms .tiles i.h{width:4px;height:2px;left:8px;transform:scaleX(0)}
+.rail-btn.platforms .tiles i.v{width:2px;height:4px;top:8px;transform:scaleY(0)}
+.rail-btn.platforms .tiles i.h1{top:3px}.rail-btn.platforms .tiles i.h2{bottom:3px}
+.rail-btn.platforms .tiles i.v1{left:3px}.rail-btn.platforms .tiles i.v2{right:3px}
+.rail-btn.platforms:hover .orb,.rail-btn.platforms:focus-visible .orb,.chat-send:not(.stop,:disabled):hover{box-shadow:0 6px 16px rgba(46,112,245,.38),inset 0 1.2px 1.6px rgba(255,255,255,.2),inset 0 -2px 5px rgba(30,58,138,.2)}
+.rail-btn.platforms:hover .tiles,.rail-btn.platforms:focus-visible .tiles{width:20px;height:20px}
+.rail-btn.platforms:hover .tiles i,.rail-btn.platforms:focus-visible .tiles i{opacity:.9;transform:none}
+.rail-btn.platforms:active .orb{inset:1px;box-shadow:inset 0 2px 4px rgba(18,38,115,.35),inset 0 1.2px 1.6px rgba(255,255,255,.2)}
+.rail-btn.platforms:active .tiles{width:18px;height:18px}
+
+/* AI: halo turns, glow and sparkles appear on hover */
+.rail-btn.ai{background:#fff;transition:box-shadow .15s ease-out}
+.rail-btn.ai .core{position:relative;width:24px;height:24px;transform:rotate(-12deg);transition:width .12s,height .12s}
+.rail-btn.ai .ring{position:absolute;inset:0;width:100%;height:100%;transition:transform .15s ease-out}
+.rail-btn.ai:hover,.rail-btn.ai:focus-visible{box-shadow:0 0 18px 2px rgba(158,115,255,.55),0 0 8px rgba(102,217,255,.45)}
+.rail-btn.ai:hover .ring,.rail-btn.ai:focus-visible .ring{transform:rotate(-90deg)}
+.rail-btn.ai:active{box-shadow:0 1px 6px rgba(158,115,255,.25)}
+.rail-btn.ai:active .core{width:21px;height:21px}
+.sparkle{position:absolute;left:50%;top:50%;width:var(--s);height:var(--s);background:linear-gradient(135deg,#66d9ff,#9e73ff,#ff73d9);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-180deg);transition:transform .15s ease-out,opacity .15s ease-out;pointer-events:none}
+.rail-btn.ai:hover .sparkle,.rail-btn.ai:focus-visible .sparkle{opacity:1;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1) rotate(0)}
+.rail-btn.ai:active .sparkle{opacity:0}
+
+/* stamp (Figma: Stamp) */
+.rail-btn.stamp{border-radius:8px}
+.rail-btn.stamp img{position:absolute;pointer-events:none}
+.rail-btn.stamp .s-bg{inset:0;width:100%;height:100%;transition:transform .15s ease-out}
+.rail-btn.stamp .s-fg{top:7.84%;right:17.5%;bottom:18.18%;left:16.67%;width:auto;height:auto;width:65.83%;height:73.98%}
+.rail-btn.stamp:hover .s-bg{transform:scale(1.06)}
+.rail-btn.stamp:active .s-bg{transform:scale(.96)}
+
+/* rail tooltips sit to the left of the button, arrow pointing at it */
+.tip{position:absolute;right:calc(100% + 15px);top:50%;transform:translateY(-50%);white-space:nowrap;background:#000;color:#fff;font-size:12px;font-weight:500;padding:7px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .15s;z-index:50;box-shadow:0 4px 12px rgba(17,25,39,.18)}
+.tip::after{content:"";position:absolute;right:-4px;top:50%;width:8px;height:8px;background:inherit;transform:translateY(-50%) rotate(45deg);border-radius:2px}
+.tip.grad{background:linear-gradient(90deg,#2563eb,#7c3aed,#b5179e);border:1px solid rgba(255,255,255,.22);box-shadow:0 6px 16px -2px rgba(124,58,237,.35),-4px 0 12px -2px rgba(34,211,238,.25),inset 0 1px 1px rgba(255,255,255,.28)}
+.tip.grad::after{background:#b5179e;border:0}
+/* in the header the tooltip drops below the button */
+.header .tip{right:50%;top:calc(100% + 12px);transform:translateX(50%)}
+.header .tip::after{right:50%;top:-4px;transform:translateX(50%) rotate(45deg)}
+.header .tip.grad::after{background:#7c3aed}  /* the arrow sits mid-tooltip, where the gradient is violet */
+/* notes moved from the header into the rail */
+.rail-btn.notes-btn{background:#fff;box-shadow:var(--shadow-xs);transition:background .15s}
+[data-tip]:hover>.tip,[data-tip]:focus-visible>.tip{opacity:1}
+[data-tip][aria-expanded="true"]>.tip{opacity:0}  /* no tooltip while its own menu is open */
+
+.workspace{flex:1;display:flex;gap:12px;min-width:0;padding-left:16px}
+
+/* ---------- secondary panel ---------- */
+/* collapse = the panel narrows toward the rail while its content stays pinned to the far edge (ClickUp reference) */
+.spanel{position:relative;width:235px;flex-shrink:0;margin-left:12px;border-radius:16px;border:1px solid var(--stroke-2);background:#fff;box-shadow:var(--shadow-xs);overflow:hidden;transition:width .25s ease-out,margin .25s ease-out,opacity .25s ease-out,border-color .25s}
+.spanel-in{position:absolute;top:0;bottom:0;left:0;width:233px;padding:16px 12px 0;display:flex;flex-direction:column;gap:16px}
+.main:not(.has-panel) .spanel{display:none}
+.main.panel-closed .spanel{width:0;margin-left:0;opacity:0;border-width:0}
+.sp-close{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sp-close:hover{background:var(--n100)}
+.spanel-head{flex:none;display:flex;align-items:center;gap:8px;padding-right:4px;height:36px}
+/* «إنشاء» in a section menu: no outline — it sits like a menu row, led by the + in a blue square (a shade deeper on hover) */
+.sp-new{flex:none;width:100%;height:44px;display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:0 8px 0 12px;border-radius:10px;background:#fff;border:1px solid var(--stroke);color:var(--n900);font-size:14px;font-weight:600;transition:background .15s}
+.sp-new .lbl{flex:1;text-align:right}
+.sp-plus{width:26px;height:26px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:7px;background:linear-gradient(180deg,#5b93fa,#426de6);box-shadow:inset 0 1.2px 1.6px rgba(255,255,255,.2),inset 0 -2px 5px rgba(30,58,138,.2);transition:box-shadow .15s}  /* same blue as the navbar + */
+.sp-plus svg{width:16px;height:16px}
+.sp-plus svg path{stroke:#fff;stroke-width:2.4}  /* a bolder + so it reads on the small blue square */
+.sp-new:hover,.sp-new[aria-expanded="true"]{background:var(--n50)}  /* white with a grey outline, dark text, blue + */
+.sp-new:hover .sp-plus,.sp-new[aria-expanded="true"] .sp-plus{box-shadow:0 2px 6px rgba(46,112,245,.28),inset 0 1.2px 1.6px rgba(255,255,255,.2),inset 0 -2px 5px rgba(30,58,138,.2)}
+.sp-new:active{background:var(--n100)}
+.sp-new:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sp-new .chev{display:flex;transition:transform .2s}
+.sp-new .chev svg{width:14px;height:14px}
+.sp-new .chev svg path{stroke:var(--n500)}
+.sp-new[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.spanel-in .lsearch{flex:none}  /* the mail list stretches its search across a row; here it keeps its height */
+.spanel-head h2{flex:1;font-size:18px;font-weight:600;color:var(--n900)}
+.toggle{width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+.toggle:hover{background:var(--stroke)}
+.hsearch input::placeholder,.lsearch input::placeholder,.nsearch input::placeholder{color:var(--n400)}
+.tree{display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex:1;min-height:0;margin:0 -12px;padding:0 12px 16px}  /* only the list scrolls: the title and «إنشاء» stay put */
+.tree > .node,.tree > .group{flex-shrink:0}  /* rows keep their 40px however long the list gets */
+.node{display:flex;align-items:center;gap:10px;height:40px;text-decoration:none;padding:0 8px;border-radius:8px;font-size:14px;color:var(--n600);width:100%;text-align:right;transition:background .15s}
+.node:hover{background:var(--n100)}
+.node .lbl{flex:1}
+.node .ic{display:flex;flex-shrink:0}
+.node .ic svg{width:20px;height:20px}  /* same 20px as the folders panel icons */
+.node .ic svg path:not([fill="none"]){fill:var(--n600)}
+.node .ic svg [stroke]:not([stroke="none"]){stroke:var(--n600)}
+.kids > .node{position:relative}
+.kids > .node::before{content:"";position:absolute;right:-14px;top:50%;width:10px;height:1px;background:var(--n300)}
+.node.head{font-weight:500;color:var(--n900)}
+.node.sm{height:36px;padding:0 8px 0 10px}
+.node.leaf{height:40px;font-size:14px;padding:0 10px}  /* 14px like the rail labels and «إنشاء» */
+/* the chosen page reads like the chosen level-1 item: light blue with blue text and icon */
+.node.leaf.active{position:relative;color:var(--n900);font-weight:700}  /* no grey fill: bold dark text + blue icon */
+.node.leaf.active .ic svg path:not([fill="none"]){fill:var(--blue)}
+.node.leaf.active .ic svg [stroke]:not([stroke="none"]){stroke:var(--blue)}
+.node .count{min-width:16px;height:16px;padding:0 5px;border-radius:10px;background:var(--red);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.node .chev{transition:transform .2s;transform:rotate(180deg)}  /* open: up · folded: down */
+.group.closed>.node .chev{transform:none}
+.group.closed>.kids{display:none}
+.kids{position:relative;display:flex;flex-direction:column;gap:2px;padding-right:28px}
+.kids::before{content:"";position:absolute;right:14px;top:0;bottom:20px;width:1px;background:var(--n300)}
+.kids.l3{padding-right:26px}
+.leafs{position:relative;display:flex;flex-direction:column;gap:2px}
+.leafs .rail-ind{position:absolute;left:-2px;width:2px;height:26px;background:var(--blue);border-radius:1px}
+
+/* ---------- inbox panel ---------- */
+.panel{flex:1;min-width:0;background:#fff;border:1px solid var(--stroke-2);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-xs)}
+.topbar{height:60px;flex-shrink:0;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--stroke)}
+.crumbs{display:flex;align-items:center;gap:4px;font-size:14px}
+.crumbs a{color:var(--n400);text-decoration:none}
+.crumbs a:hover{color:var(--blue)}
+.crumbs .cur{color:var(--n900);font-weight:500}
+.pbody{flex:1;display:flex;min-height:0}
+
+/* list */
+.list{width:363px;flex-shrink:0;border-left:1px solid var(--stroke);display:flex;flex-direction:column;gap:14px;min-height:0}
+.list-top{height:61px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--stroke)}
+.tabs{display:flex;gap:12px;align-self:stretch}
+.tab{width:68px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;font-size:14px;font-weight:500;color:var(--n700)}
+.tab::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:2px;border-radius:2px;background:transparent}
+.tab.active{color:var(--blue);font-weight:600}
+.tab.active::after{background:var(--blue)}
+.ibtn{position:relative;width:32px;height:32px;flex-shrink:0;border:1px solid var(--n300);border-radius:8px;display:flex;align-items:center;justify-content:center;background:#fff;transition:background .15s}
+.ibtn>svg{margin:-1px}
+.ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--n100)}
+.ibtn.raw{border:0;width:auto;height:auto;background:none;border-radius:8px}
+.ibtn.raw:hover{background:none;filter:brightness(.96)}
+.ibtn.lg{width:36px;height:36px;border-radius:9px;border-width:1.125px}
+.ibtn.lg>svg{margin:0}
+.ibtn.refresh:hover{background:var(--n100)}
+.ibtn.refresh.spin svg{animation:refreshSpin .5s linear 2}
+@keyframes refreshSpin{to{transform:rotate(360deg)}}
+.ibtn.refresh.spin{background:var(--n100)}
+.list-tools{display:flex;gap:6px;padding:2px 12px}
+.lsearch{flex:1;min-width:0;height:36px;display:flex;align-items:center;gap:6px;padding:8px 10px 8px 8px;border:1px solid var(--stroke);border-radius:8px}
+.hsearch input,.lsearch input{flex:1;min-width:0;font-size:14px}
+.items{flex:1;overflow:auto;border-top:1px solid var(--stroke);padding-bottom:12px}
+.day{height:31px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--n50);border-bottom:1px solid var(--stroke);font-size:12px;width:100%}
+.day .lbl{display:flex;align-items:center;gap:8px;color:var(--n800)}
+.day .lbl svg{transition:transform .2s}
+.day.closed .lbl svg{transform:rotate(180deg)}
+.day .cnt{display:flex;align-items:center;gap:4px;color:var(--n600);font-weight:500}
+.day-items{display:block}
+.day.closed+.day-items{display:none}
+.mail{position:relative;display:flex;gap:12px;padding:16px;border-bottom:1px solid var(--stroke);cursor:pointer;transition:background .12s}
+.mail:hover{background:var(--n100)}
+.mail.flag{background:var(--amber-50)}
+.mail.late{background:var(--red-50)}
+.mail.active{background:var(--blue-50)}
+.mail.unread::before{content:"";position:absolute;right:0;top:0;bottom:0;width:6px;background:var(--blue)}
+.mail.unread .sender,.mail.unread .subj{font-weight:600}
+.mail .av{width:36px;height:36px;border-radius:50%;border:2px solid #fff;background:var(--av-bg,var(--avatar-bg));color:var(--av-tx,var(--avatar-tx));font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.mail .av img{width:100%;height:100%;object-fit:cover}
+.mail .av.teal{background:#99f6e0;color:#107569}
+.mail .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.mail .head{display:flex;align-items:center;gap:8px}
+.mail .sender{flex:1;font-size:13px;font-weight:500;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mail .ind{display:flex;align-items:center;gap:8px;color:var(--n500);font-size:11px;font-weight:500}
+.mail .ind .att{display:flex;align-items:center;gap:2px}
+.mail .more{width:17px;height:17px;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.mail .more:hover{background:rgba(0,0,0,.06)}
+.mail .subj{font-size:14px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:-4px}
+.mail .meta{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:11px;color:var(--n700)}
+.mail .meta .id{color:var(--n500)}
+.mail .meta .id b{font-weight:400;font-size:12px}
+.mail .meta .bar{width:1px;height:12px;background:var(--n700)}
+.mail .tags{display:flex;gap:8px}
+.tag{height:24px;padding:0 8px;border-radius:100px;background:var(--n50);font-size:10px;font-weight:500;color:var(--n800);display:inline-flex;align-items:center}
+.tag.info{background:#eff8ff;color:#1849a9}
+
+/* reading pane */
+.reader{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.rtool{height:61px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--stroke)}
+.rtool .grp{display:flex;gap:8px;align-items:center}
+.rbtn{height:36px;display:flex;align-items:center;gap:4px;padding:6px 10px;border:1px solid var(--stroke);border-radius:6px;font-size:14px;color:var(--n700);background:#fff}
+.rbtn:hover{background:var(--n50)}
+.rbtn.ai{position:relative;border:0;border-radius:8px;padding:0 12px;font-weight:500;background:#fff;transition:background .15s}
+.rbtn.ai:hover,.rbtn.ai[aria-expanded="true"]{background:#f6f1fe}
+.rbtn.ai img{transition:transform .35s ease-out,filter .2s}
+.rbtn.ai:hover img{transform:rotate(180deg);filter:saturate(1.3) drop-shadow(0 0 3px rgba(158,115,255,.6))}
+.rbtn.ai svg path{transition:fill .15s}
+.rbtn.ai:hover svg path{fill:#a43bd9}
+.rbtn.ai::before{content:"";position:absolute;inset:0;border-radius:8px;padding:1px;background:linear-gradient(180deg,#4d98f7,#d80fb3);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.rbtn.ai img{width:20px;height:20px}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px;display:flex;flex-direction:column;gap:18px}
+.mhead{display:flex;gap:32px;justify-content:space-between}
+.mhead .titlecol{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+.mhead h1{font-size:16px;font-weight:500;line-height:24px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.sender-row{display:flex;align-items:center;gap:12px}
+.sender-row .who{display:flex;flex-direction:column;gap:2px}
+.sender-row .nm{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500}
+.sender-row .org{font-size:12px;color:var(--n500)}
+.sender-av{width:40px;height:40px;border-radius:50%;background:var(--blue-100);position:relative;overflow:hidden;flex-shrink:0}
+.sender-av::before{content:"";position:absolute;left:5px;top:22px;width:30px;height:24px;border-radius:50%;background:var(--avatar-tx)}
+.sender-av::after{content:"";position:absolute;left:13px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--avatar-tx)}
+.mhead .side{display:flex;flex-direction:column;gap:12px;align-items:flex-end;flex-shrink:0}
+.review-note{display:flex;align-items:center;gap:6px;margin-bottom:-2px;font-size:15px;font-weight:600;color:var(--red-700)}  /* -2px against the 18px column gap leaves 16px above the letter */
+.review-note svg{width:20px;height:20px}
+.when{display:flex;gap:4px;font-size:14px;color:var(--n500)}
+.when .ago{color:var(--red-700);font-weight:500}
+.recips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.recips .lab{font-size:12px;color:var(--n500)}
+.chip{height:28px;padding:4px 10px;border-radius:999px;border:1px solid var(--stroke-2);background:#fff;font-size:12px;font-weight:500;color:var(--n700);display:inline-flex;align-items:center}
+.chip.more{color:var(--blue-700)}
+.chip.more:hover{background:var(--blue-50)}
+.gap10{width:10px}
+.divider{height:1px;background:#f2f4f7;flex-shrink:0}
+.letter{display:flex;flex-direction:column;gap:16px;font-size:14px;line-height:1.6;color:var(--body-tx)}
+.letter .strong{font-weight:500}
+.letter p{margin:0}
+.letter a{color:var(--blue);text-decoration:underline;border-radius:4px;padding:0 2px;margin:0 -2px;transition:color .15s,background .15s}
+.letter a:hover{color:#003aac;background:rgba(37,99,235,.12)}
+/* sender avatar: photo or initials (Figma: Sender Avatar, 40px with a 2px white ring) */
+.sender-av.pic,.sender-av.init{background:#fff;box-shadow:0 0 0 2px #fff}
+.sender-av.pic::before,.sender-av.pic::after,.sender-av.init::before,.sender-av.init::after{display:none}
+.sender-av.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.sender-av.init{display:flex;align-items:center;justify-content:center;background:var(--av-bg,var(--avatar-bg));color:var(--av-tx,var(--avatar-tx));font-size:14px;font-weight:600}
+.file .badge.amber{color:#b54708;background:#fffaeb}
+/* footer link-out for system notices */
+.actions .go{background:var(--blue);border-color:var(--blue);color:#fff;gap:8px}
+.actions .go:hover{background:var(--blue-700)}
+.actions .ok,.actions .no{min-width:120px;justify-content:center}
+.actions .ok{background:#06854e;border-color:#06854e;color:#fff}  /* between success/600 and /700, hover success/700 */
+.actions .ok:hover{background:var(--green);border-color:var(--green)}
+.actions .no{border-color:var(--red);color:var(--red-700)}
+.actions .no:hover{background:var(--red-50)}
+.actions[hidden],.actions [hidden]{display:none!important}
+/* earlier messages in the same conversation, collapsed (one example only, user request 3 Nov 2026) */
+.thread{display:flex;flex-direction:column}
+.t-item{border-top:1px solid var(--stroke)}
+.t-head{width:100%;display:flex;flex-direction:column;gap:6px;padding:14px 0;background:none;border:0;text-align:right;cursor:pointer;border-radius:8px}
+.t-row{display:flex;align-items:center;gap:12px}
+.t-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden}
+.t-av.init{display:flex;align-items:center;justify-content:center;background:var(--av-bg,var(--avatar-bg));color:var(--av-tx,var(--avatar-tx));font-size:12px;font-weight:600}
+.t-av.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.t-top{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
+.t-name{font-size:13px;font-weight:600;color:var(--n900)}
+.t-date{font-size:12px;color:var(--n500)}
+.t-prev{margin-inline-start:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:var(--n500)}
+.t-head[aria-expanded="true"] .t-prev{display:none}  /* the full body below already says more than this one-line summary */
+.t-body{padding:0 0 16px;margin-inline-start:44px;display:flex;flex-direction:column;gap:12px;font-size:13px;line-height:1.6;color:var(--body-tx)}
+.t-to{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.t-to .lab{font-size:12px;color:var(--n500)}
+.t-to .chip{height:24px;font-size:11px;gap:6px;padding-inline-start:4px}
+.chip-av{width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--av-tx,var(--avatar-tx));background:var(--av-bg,var(--avatar-bg))}
+.t-body p{margin:0}
+/* system e-mail template (Figma: نظام الرخص البلدية) */
+.letter.is-tpl{display:block}
+.tpl-wrap{background:var(--n50);border-radius:12px;padding:32px 16px}
+.tpl{max-width:600px;margin:0 auto;background:#fff;border:1px solid var(--stroke);border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:24px;color:var(--n700)}
+.tpl-brand{display:flex;align-items:center;gap:8px}
+.tpl-brand div{display:flex;flex-direction:column}
+.tpl-brand b{font-size:16px;font-weight:600;color:var(--n900);line-height:1.4}
+.tpl-brand span{font-size:8px;font-weight:500;letter-spacing:.06em;color:var(--n500)}
+.tpl-box{border:1px solid var(--stroke);border-radius:8px;background:var(--n50);padding:24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.tpl-box b{font-size:14px;font-weight:600;color:var(--n900)}
+.tpl-box span{font-size:12px;color:var(--n500)}
+.tpl section{display:flex;flex-direction:column;gap:8px}
+.tpl h4{font-size:14px;font-weight:600;color:var(--n900)}
+.tpl p{font-size:14px;line-height:20px;color:var(--n600)}
+.tpl-cta{height:44px;border-radius:6px;background:var(--blue);color:#fff;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.tpl-cta:hover{background:var(--blue-700)}
+.tpl-foot{border-top:1px solid var(--stroke);padding-top:24px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:12px;color:var(--n600)}
+.btn-outline{align-self:flex-start;height:39px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--blue);border-radius:8px;color:var(--blue);font-size:14px;font-weight:500;background:#fff}
+.btn-outline:hover{background:var(--blue-50)}
+.attachments{display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid var(--stroke)}
+.attachments h3{font-size:14px;font-weight:600}
+.att-head{display:flex;align-items:center;gap:8px}
+.att-head .ibtn{border:0}
+.att-head .ibtn svg{transform:rotate(90deg)}  /* the toolbar «المزيد» dots, standing up */
+.attachments.seq .files{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.attachments.seq .files::-webkit-scrollbar{display:none}
+.attachments.seq .file{flex-shrink:0}
+.files{display:flex;flex-wrap:wrap;gap:10px}
+.file{width:264px;max-width:100%;height:64px;display:flex;align-items:stretch;background:var(--n50);border:1px solid var(--stroke);border-radius:8px;}
+.file .info{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:12px 8px}
+.file .txt{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.file .top{display:flex;align-items:center;gap:12px;min-width:0}
+.file .fname{font-size:12px;font-weight:600;color:var(--n800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.file .size{font-size:10px;color:var(--n500)}
+.file .badge{height:22px;padding:4px 9px;border-radius:100px;background:#fff;font-size:11.5px;display:flex;align-items:center;margin-right:auto;white-space:nowrap;flex-shrink:0}
+.file .badge.red{color:var(--red)}
+.file .badge.green{color:var(--green)}
+.file .dl{position:relative;width:29px;flex-shrink:0;border-right:1px solid var(--stroke);border-radius:7px 0 0 7px;display:flex;align-items:center;justify-content:center}
+.file .dl:hover{background:var(--n100)}
+.actions{height:77px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:16px 24px;border-top:1px solid var(--stroke);background:#fff}
+.btn{height:44px;display:inline-flex;align-items:center;gap:4px;padding:0 16px;border-radius:8px;border:1px solid var(--n300);font-size:14px;font-weight:500;background:#fff;color:var(--n900)}
+.btn:hover{background:var(--n50)}
+.split{display:flex;gap:1px;border-radius:8px;overflow:hidden}
+.split .btn{border:0;border-radius:0;background:var(--blue);color:#fff}
+.split:hover .btn{background:var(--blue-700)}
+.split .btn.caret{padding:0 10px}
+
+/* floating AI: draggable along the left edge, lifts on hover */
+.ai-strip{position:fixed;left:0;top:100px;bottom:0;width:60px;z-index:40;pointer-events:none}
+.ai-float{position:absolute;left:0;top:var(--y,calc(100% - 160px));width:60px;height:48px;padding:8px 14px;background:#fff;border-radius:0 24px 24px 0;box-shadow:0 24px 96px rgba(12,13,25,.06),0 12px 48px rgba(12,13,25,.06),0 6px 24px rgba(12,13,25,.06),0 0 1px rgba(114,118,139,.32);display:flex;align-items:center;justify-content:center;pointer-events:auto;cursor:grab;touch-action:none;transition:box-shadow .2s ease-out,width .2s ease-out}
+.ai-float img{width:32px;height:32px;transform:rotate(-180deg);transition:transform .45s cubic-bezier(.3,1.4,.5,1);pointer-events:none}
+.ai-float:hover{width:66px;box-shadow:0 4px 12px rgba(99,64,217,.35)}
+.ai-float:hover img{transform:rotate(0deg) scale(1.08)}
+.ai-float.dragging{cursor:grabbing;transition:box-shadow .2s;box-shadow:0 8px 24px rgba(99,64,217,.4)}
+.ai-float.dragging img{transform:rotate(0) scale(1.08)}
+
+/* overlay scrollbars: no reserved gutter, a thin thumb floats over the content while scrolling */
+.items,.content{scrollbar-width:none}
+.items::-webkit-scrollbar,.content::-webkit-scrollbar{display:none}
+.ov-thumb{position:absolute;width:5px;border-radius:3px;background:rgba(108,115,127,.45);opacity:0;transition:opacity .25s;pointer-events:none;z-index:6}
+.ov-thumb.show{opacity:1}
+/* every other scroll area: no native bar at all, one shared floating thumb shows while it scrolls */
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none}
+.ov-thumb.float{position:fixed;z-index:1000}
+
+/* flag on a mail card: solid red when set, outline on hover when not */
+.cflag{width:18px;height:18px;border-radius:4px;display:none;align-items:center;justify-content:center}
+.cflag:hover{background:rgba(0,0,0,.06)}
+.mail.flag .cflag,.mail:hover .cflag{display:flex}
+.mail:not(.flag) .cflag .on,.mail.flag .cflag .off{display:none}
+.cflag .off path{fill:#9da4ae}
+.mail .ind .lock{display:flex}
+.mail:hover .ind .lock{display:none}  /* the padlock gives its place to the hover actions */
+.ibtn.flagged svg path{fill:#b42318}
+
+/* empty states (outbox) */
+.empty-state{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px}
+.empty-state .ic{width:56px;height:56px;border-radius:50%;background:var(--n100);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.empty-state .ic svg{width:22px;height:22px}
+.empty-state b{font-size:15px;font-weight:600;color:var(--n900)}
+.empty-state span:last-child{font-size:13px;color:#6b7380}
+.panel.outbox .items,.panel.outbox .rtool,.panel.outbox .content,.panel.outbox .actions{display:none}
+.panel.outbox .list-empty,.panel.outbox .reader-empty{display:flex}
+.panel.outbox .list-empty{padding-bottom:120px}
+
+/* filter: no matching results */
+.filter-empty{display:flex;flex:1;flex-direction:column;overflow:hidden}
+.filter-empty .fe-title{margin:0 23px 0 12px;font-size:14px;font-weight:600;color:var(--n900)}  /* the list's 14px gap above; starts where the search input's content starts (12 + border 1 + padding 10) */
+.filter-empty .empty-state{display:flex}
+
+/* loading skeletons (refresh) */
+.sk{display:block;background:#e5e7eb;border-radius:6px;animation:skPulse 1.2s ease-in-out infinite}
+@keyframes skPulse{0%,100%{opacity:1}50%{opacity:.45}}
+.sk-list,.sk-content{display:none}
+.panel.loading .items,.panel.loading .content{display:none}
+.panel.loading .sk-list{display:block;flex:1;overflow:hidden;border-top:1px solid var(--stroke)}
+.panel.loading .sk-content{display:flex}
+.sk-row{display:flex;gap:12px;padding:16px;height:123px;border-bottom:1px solid #eff0f2}
+.sk-av{width:36px;height:36px;border-radius:50%;flex-shrink:0}
+.sk-lines{flex:1;display:flex;flex-direction:column;gap:10px}
+.sk-content{flex:1;flex-direction:column;align-items:flex-start;gap:14px;padding:28px 24px;overflow:hidden}
+.panel.loading .ibtn.refresh{background:var(--n100)}
+
+/* sender details arrow (Figma: Sender Arrow / تفاصيل المعاملة) */
+.sender-arrow{position:relative;width:23px;height:23px;border-radius:50%;background:var(--n100);display:flex;align-items:center;justify-content:center;transition:background .15s}
+.sender-arrow:hover,.sender-arrow[aria-expanded="true"]{background:var(--stroke)}
+
+/* mail card select: checkbox replaces the avatar on hover, stays when checked */
+.mail .lead{position:relative;width:36px;height:36px;flex-shrink:0}
+.mail .pick{position:absolute;inset:9px;width:18px;height:18px;border:1px solid var(--n300);border-radius:4px;background:#fff;display:none;align-items:center;justify-content:center}
+.mail .pick:hover{border-color:var(--blue)}
+.mail .pick[aria-checked="true"]{background:var(--blue);border-color:var(--blue)}
+.mail .pick[aria-checked="true"]::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.mail:hover .lead .av,.mail.picked .lead .av{visibility:hidden}
+.mail:hover .pick,.mail.picked .pick{display:flex}
+.mail.picked{background:var(--blue-50)}
+
+/* selection bar replaces the list tools while cards are checked (Figma: Mail/Selection Bar) */
+.sel-bar{margin:2px 12px;height:42px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:4px 12px 4px 4px;border:1px solid var(--stroke);border-radius:8px;background:#fff}
+.sel-bar[hidden]{display:none}
+.list.selecting .list-tools{display:none}
+.sel-all{display:flex;align-items:center;gap:8px;font-size:12px;color:#000;cursor:pointer}
+.sel-all .pick,.sel-bar .pick,.rl-check .pick{position:relative;inset:auto;display:flex;width:18px;height:18px;border:1px solid var(--n300);border-radius:4px;background:#fff;align-items:center;justify-content:center}
+.sel-bar .pick[aria-checked="true"],.sel-bar .pick[aria-checked="mixed"],.rl-check input:checked+.pick{background:var(--blue);border-color:var(--blue)}
+.sel-bar .pick[aria-checked="true"]::after,.rl-check input:checked+.pick::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.sel-bar .pick[aria-checked="mixed"]::after{content:"";width:8px;height:2px;background:#fff;border-radius:1px}
+.sel-acts{display:flex;align-items:center;gap:5px}
+.sel-btn{position:relative;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.sel-btn:hover,.sel-btn[aria-expanded="true"]{background:var(--n100)}
+.sel-btn svg{max-width:18px;max-height:18px}
+.sel-div{width:1px;height:20px;background:var(--n300)}
+
+/* fixed tooltip for buttons inside clipped panels */
+.ftip{position:fixed;z-index:120;background:#1f2a37;color:#f9fafb;font-size:12px;font-weight:500;padding:6px 8px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s;box-shadow:0 12px 16px -4px rgba(16,24,40,.08)}
+.ftip.show{opacity:1}
+.ftip::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:1.5px}
+.ftip.below::after{bottom:auto;top:-4px}
+.ftip.side::after{left:auto;right:-4px;bottom:auto;top:50%;transform:translateY(-50%) rotate(45deg)}
+
+/* floating AI tooltip: to the right of the button, arrow pointing back at it */
+/* tiny close button on the pill's outer edge hides the floating assistant until reload */
+.ai-close{position:absolute;top:-4px;right:-3px;opacity:0;width:16px;height:16px;border-radius:50%;background:#fff;color:var(--n500);box-shadow:0 0 0 1px var(--stroke),0 1px 3px rgba(16,24,40,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .12s,background .12s,opacity .15s}
+.ai-close:hover{background:var(--n100);color:var(--n900)}
+.ai-float:hover .ai-close,.ai-close:focus-visible{opacity:1}
+.ai-float.dragging .ai-close{opacity:0}
+.ai-float .tip{right:auto;left:calc(100% + 12px)}
+.ai-float .tip::after{right:auto;left:-4px;background:#2563eb}
+.ai-float:hover .tip{opacity:1}
+.ai-float.dragging .tip{opacity:0}
+.ibtn.saved{border-color:var(--n300);background:#fff}
+.panel.searching .items{display:none}
+.panel.searching .sk-list{display:block;flex:1;overflow:hidden;border-top:1px solid var(--stroke)}
+
+/* ---------- folders panel (Figma: بانل الفولدرات) ---------- */
+.pbody{position:relative}
+.folders{position:relative;width:65px;flex-shrink:0;transition:width .25s ease-out;z-index:15}
+.folders.pinned{width:220px}
+.fold-in{position:absolute;top:0;bottom:0;right:0;width:65px;background:#fff;border-left:1px solid var(--stroke);padding:14px 12px;display:flex;flex-direction:column;gap:12px;overflow:hidden;transition:width .2s ease-out,box-shadow .2s ease-out,padding .2s ease-out}
+.folders.pinned .fold-in{width:220px;padding:12px}
+.folders.open .fold-in{width:220px;padding:14px 8px 18px;box-shadow:0 20px 24px -4px rgba(16,24,40,.08),0 8px 8px -4px rgba(16,24,40,.03)}
+.fold-head{display:flex;align-items:center;gap:10px;padding:0 12px 0 4px;height:0;opacity:0;overflow:hidden;flex-shrink:0;transition:opacity .15s,height .2s ease-out}
+.folders.pinned .fold-head,.folders.open .fold-head{height:40px;opacity:1}
+.fold-title{flex:1;font-size:18px;font-weight:600;color:var(--n900);white-space:nowrap}  /* same as the section menu title */
+.pin{position:relative;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pin:hover{background:var(--n100)}
+.pin .p-on,.folders.pinned .pin .p-off{display:none}
+.folders.pinned .pin .p-on{display:flex}
+.fold-list{display:flex;flex-direction:column;gap:12px;min-height:0;overflow-y:auto;scrollbar-width:none}  /* rule folders can make it longer than the panel */
+.folder{position:relative;height:40px;width:100%;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:8.6px;font-size:14px;color:var(--n700);text-align:right;white-space:nowrap;transition:background .12s}
+.folder svg{flex-shrink:0}
+.folder>svg{width:20px;height:20px}
+.folder .lbl{flex:1;opacity:0;transition:opacity .12s}
+.folders.pinned .folder .lbl,.folders.open .folder .lbl{opacity:1}
+.folder .cnt{flex-shrink:0;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--red);color:#fff;font-size:11px;line-height:20px;font-weight:600;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .12s}
+.folders.pinned .folder .cnt,.folders.open .folder .cnt{opacity:1}
+.folder:hover{background:var(--n100)}
+.folder.active{background:var(--n100);color:var(--n900);font-weight:700}  /* one selected weight everywhere (700): rail, section menu, folders */
+.rail.wide .rail-item.active::after{content:"";position:absolute;right:0;top:7px;bottom:7px;width:3px;border-radius:3px 0 0 3px;background:var(--blue)}
+.folder.active .cnt{background:var(--red)}
+.folder.active svg path{fill:var(--blue)}
+.folders:not(.pinned):not(.open) .folder{padding:0 10px;width:40px}
+/* «صناديق»: the folders the user creates with rules, folded away from the fixed ones above */
+.fgroup{display:flex;align-items:center;gap:4px;padding:4px 10px 0}
+.folders:not(.pinned):not(.open) .fgroup{display:none}
+.fgroup-t{flex:1;display:flex;align-items:center;gap:4px;height:28px;border-radius:6px;font-size:14px;font-weight:500;color:var(--n800);text-align:right;white-space:nowrap;transition:color .12s}
+.fgroup-t:hover{color:var(--n900)}
+.fgroup-t .chev{display:flex;transition:transform .2s}
+.fgroup-t .chev{transform:rotate(180deg)}  /* open: up · folded: down, like the menu groups */
+.fgroup-t[aria-expanded="false"] .chev{transform:none}
+.fgroup-t .chev{color:var(--n500)}
+.fgroup-t .chev svg path{stroke:currentColor}
+.fgroup-add{width:26px;height:26px;flex-shrink:0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--n500);transition:background .12s,color .12s}
+.fgroup-add:hover{background:var(--n100);color:var(--blue)}
+.fgroup-add svg{width:16px;height:16px}
+.fgroup-add svg path{stroke:currentColor}
+.fold-list.boxes-closed .fgroup ~ .frow.user{display:none}
+/* mail rules (rules.js): every folder is a row with a ⋯ that takes the count's place on hover, keyboard focus and while its menu is open */
+.frow{position:relative;flex-shrink:0}
+.folder .lbl{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.fmore{position:absolute;left:8px;top:8px;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .12s,background .12s}
+.fmore svg{width:18px;height:18px}
+.fmore:hover,.fmore[aria-expanded="true"]{background:var(--n300)}
+.fmore:focus-visible{outline:2px solid var(--blue);outline-offset:0}
+.frow:is(:hover,:has(:focus-visible)) .fmore,.fmore[aria-expanded="true"]{opacity:1;pointer-events:auto}
+.frow:is(:hover,:has(:focus-visible)) .cnt,.frow:has(.fmore[aria-expanded="true"]) .cnt{visibility:hidden}
+.frow:has(.fmore[aria-expanded="true"]) .folder:not(.active){background:var(--n100)}
+.folders:not(.pinned):not(.open) .fmore{display:none}
+/* user folders: indented under their parent folder; a paused rule fades its row and badges the folder icon */
+.folders:is(.pinned,.open) .frow :is(.folder,.f-edit){padding-right:calc(10px + var(--lvl, 0) * 16px)}
+.fic{position:relative;display:flex;flex-shrink:0}
+.folder.active svg path[stroke]{fill:none;stroke:var(--blue)}
+.folder.paused{color:var(--n500)}
+.folder.paused .fic>svg,.folder.paused .lbl{opacity:.55}
+.fbadge{position:absolute;left:-4px;bottom:-3px;width:12px;height:12px;border-radius:50%;background:var(--n600);box-shadow:0 0 0 1.5px #fff;display:flex;align-items:center;justify-content:center}
+.frow.editing .folder,.frow.editing .fmore{display:none}
+.f-edit{width:100%;height:40px;display:flex;align-items:center;gap:11px;padding-left:6px}  /* .frow is itself display:flex, so without width:100% this shrink-wraps to the input's natural size instead of filling the row */
+.f-edit input{flex:1;min-width:0;height:32px;padding:0 8px;border:1px solid var(--blue);border-radius:6px;background:#fff;font-size:14px}
+.mail.out{display:none}  /* a mail sitting in another folder */
+.list{position:relative;width:var(--list-w,400px);min-width:320px;max-width:400px}
+/* drag the list's inner edge to narrow it: 400px (default) is the widest, 320px the narrowest */
+.list-resize{position:absolute;top:0;bottom:0;left:-4px;width:8px;cursor:col-resize;z-index:12}
+.list-resize::after{content:"";position:absolute;top:0;bottom:0;left:3px;width:2px;background:transparent;transition:background .15s}
+.list-resize:hover::after,.list-resize:focus-visible::after,.list.resizing .list-resize::after{background:var(--n400)}
+.list-resize:focus-visible{outline:0}
+body.col-resizing{cursor:col-resize;user-select:none}
+.list-title{font-size:16px;font-weight:600;color:var(--n700)}
+
+/* ---------- account menu (Figma: Account panel) ---------- */
+.user{text-align:right}
+.user[aria-expanded="true"]>svg{transform:rotate(180deg)}
+.user>svg{transition:transform .2s}
+
+/* ---------- search fields: hover and focus, shared by every search input ---------- */
+.hsearch,.lsearch,.nsearch{transition:border-color .15s}
+.hsearch:hover,.lsearch:hover,.nsearch:hover{border-color:#cbcfd6}
+.hsearch:focus-within,.lsearch:focus-within,.nsearch:focus-within{border-color:var(--blue)}
+
+/* when the list is narrow the date shortens with an ellipsis; the ID always stays whole */
+.mail .meta>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.mail .meta .id,.mail .meta .bar{flex-shrink:0}
+/* header name reads heavier than the name inside the account menu */
+.user .name{font-weight:600}
+/* long header names stay on one line and end with an ellipsis */
+.user .info{min-width:0;max-width:160px;width:auto}
+.user .name,.user .role{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user .name{font-weight:600}
+/* إحالة button: a little wider */
+.rtool .rbtn:not(.ai){padding:6px 16px;gap:6px}
+/* إحالة: icon and label on the right, arrow at the far left */
+.rtool .rbtn.ihala{padding:6px 12px 6px 8px;gap:6px}
+.rbtn.ihala .caret{display:flex;margin-right:2px;color:var(--n500)}
+/* sender name in every card reads a bit heavier; unread stays heavier still */
+.mail .sender{font-weight:600}
+.mail.unread .sender{font-weight:700}
+/* ---------- account menu (Figma: Account panel / Option C) ---------- */
+.pop.account{width:280px;padding:10px 0 12px;border-radius:16px;background:#fff;border:1px solid var(--stroke);box-shadow:0 2px 3px rgba(16,24,40,.05),0 12px 12px rgba(16,24,40,.1)}
+.pop.account.open{display:flex;flex-direction:column}
+.acc-summary{display:flex;align-items:center;gap:10px;padding:5px 12px 15px 10px;border-bottom:1px solid var(--stroke)}  /* 16px above the name and under the role, equal (user request, 2 Nov 2026) */
+.acc-av{width:40px;height:40px;border-radius:50%;background:#ebf2ff;color:var(--avatar-tx);font-size:17.8px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1.1px 2.2px rgba(255,255,255,.3)}
+.acc-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.acc-id b{font-size:14px;font-weight:500;line-height:24px;color:var(--n900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-id span{font-size:12px;line-height:20px;color:var(--n600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-item{width:100%;height:52px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 12px 0 8px;border-bottom:1px solid var(--n100);font-size:14px;line-height:20px;color:var(--n900);text-align:right;transition:background .15s}
+.acc-item:hover,.acc-lang.open > .acc-item{background:var(--n50)}
+.acc-item.danger{border-bottom:0;color:#d92d20}
+.acc-item>span:first-of-type{flex:1;min-width:0}
+.acc-ic{width:20px;height:20px;flex-shrink:0}
+.acc-end{display:flex;align-items:center;gap:8px}
+.acc-val{font-size:12px;color:var(--n600)}
+/* language: a submenu beside the panel, opened by hover or click */
+.acc-lang,.mi-sub{position:relative}
+.acc-sub,.mi-subm{position:absolute;left:calc(100% + 6px);top:-9px;width:168px;padding:8px;display:none;flex-direction:column;border-radius:16px;background:#fff;border:1px solid var(--stroke);box-shadow:0 2px 3px rgba(16,24,40,.05),0 12px 12px rgba(16,24,40,.12)}
+.acc-sub::before,.mi-subm::before{content:"";position:absolute;inset:0 100% 0 -8px}  /* bridges the gap so the pointer can travel to it */
+.acc-lang:hover .acc-sub,.acc-lang.open .acc-sub,.mi-sub:hover .mi-subm,.mi-sub.open .mi-subm{display:flex}
+/* a menu item that opens a submenu (e.g. «القواعد» in «المزيد»): arrow at the far end, stays highlighted while open */
+.mi-end{margin-inline-start:auto}
+.mi-subm{left:calc(100% + 15px)}  /* 8px clear of the parent menu (its 7px padding + border, then the gap) */
+.mi-subm::before{left:-16px}
+.mi-sub:hover > .mi,.mi-sub.open > .mi{background:var(--n50)}
+.acc-opt{height:40px;display:flex;align-items:center;gap:12px;padding:0 12px;border-radius:8px;font-size:14px;color:var(--n900);text-align:right}
+.acc-opt:hover{background:var(--n50)}
+.acc-opt span{flex:1}
+.acc-opt img{visibility:hidden}
+.acc-opt.on img{visibility:visible}
+
+/* «صناديق» before the first box (8 Nov) */
+.fempty{display:flex;flex-direction:column;align-items:center;gap:2px;margin:4px 10px;padding:8px;text-align:center}
+.fempty[hidden],.folders:not(.pinned):not(.open) .fempty,.fold-list.boxes-closed .fempty:not(.g){display:none}
+/* «مجموعات» (8 Nov): same header and empty state as «صناديق», folds on its own */
+.fold-list.groups-closed :is(.frow.grp,.fempty.g){display:none}
+/* drag a box or a group to reorder it: a blue line where it will land */
+.frow.dragging{opacity:.4}
+.frow:is(.drop-above,.drop-below)::after{content:"";position:absolute;right:10px;left:10px;height:2px;border-radius:2px;background:var(--blue);pointer-events:none}
+.frow.drop-above::after{top:-7px}
+.frow.drop-below::after{bottom:-7px}
+.fempty-ic{width:36px;height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;border-radius:50%;background:var(--n100)}
+.fempty-ic svg{width:18px;height:18px}
+.fempty-ic svg path[fill^="#"]{fill:var(--n400)}
+.fempty-ic svg path[stroke]:not([stroke="none"]){stroke:var(--n400)}
+.fempty b{font-size:12px;font-weight:500;color:var(--n600)}
+/* text button */
+.fempty-btn{margin-top:2px;height:26px;display:flex;align-items:center;gap:4px;padding:0 6px;border-radius:6px;background:none;font-size:12px;font-weight:600;color:var(--blue);transition:color .15s,background .15s}
+.fempty-btn:hover{color:var(--blue-700);background:var(--blue-50,#eef4fe)}
+.fempty-btn svg{width:14px;height:14px}
+.fempty-btn svg path{stroke:currentColor}
+.folder .fic>svg{width:20px;height:20px}
